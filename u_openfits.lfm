@@ -1,0 +1,40 @@
+object F__OPENFITS: TF__OPENFITS
+  Left = 396
+  Height = 715
+  Top = 109
+  Width = 1068
+  Caption = 'OpenFits'
+  ClientHeight = 695
+  ClientWidth = 1068
+  Menu = MENU__OPENFITS
+  LCLVersion = '2.0.6.0'
+  object TB__OPENFITS: TToolBar
+    Left = 0
+    Height = 26
+    Top = 0
+    Width = 1068
+    Caption = 'TB__OPENFITS'
+    TabOrder = 0
+    object TB__FILEOPEN: TToolButton
+      Left = 1
+      Top = 2
+      Caption = 'TB__FILEOPEN'
+    end
+  end
+  object MENU__OPENFITS: TMainMenu
+    top = 40
+    object MENU__FILE: TMenuItem
+      Caption = 'Datei'
+      object MENU__FILEOPEN: TMenuItem
+        Caption = 'Öffnen'
+        OnClick = MENU__FILEOPENClick
+      end
+    end
+  end
+  object ODLG__OPENFITS: TOpenDialog
+    DefaultExt = '.fit'
+    Filter = 'Fits-Astrobilddateien|*.fit'
+    left = 40
+    top = 40
+  end
+end
