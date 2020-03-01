@@ -1,0 +1,20 @@
+object F__IMG: TF__IMG
+  Left = 799
+  Height = 401
+  Top = 233
+  Width = 528
+  Caption = 'Image Form'
+  ClientHeight = 401
+  ClientWidth = 528
+  OnActivate = FormActivate
+  OnClose = FormClose
+  LCLVersion = '2.0.6.0'
+  object IMG: TImage
+    Left = 0
+    Height = 401
+    Top = 0
+    Width = 528
+    Align = alClient
+    Proportional = True
+  end
+end

@@ -1,0 +1,194 @@
+object F__HISTOGRAM: TF__HISTOGRAM
+  Left = 804
+  Height = 350
+  Top = 255
+  Width = 540
+  Caption = 'Histogramm'
+  ClientHeight = 350
+  ClientWidth = 540
+  OnActivate = FormActivate
+  LCLVersion = '2.0.6.0'
+  object CHART: TChart
+    Left = 0
+    Height = 276
+    Top = 0
+    Width = 470
+    AxisList = <    
+      item
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelFont.Orientation = 900
+        Title.Visible = True
+        Title.Caption = '%'
+        Title.LabelBrush.Style = bsClear
+      end    
+      item
+        Alignment = calBottom
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.Caption = 'Pixelwert 0 - 65536 (2 Byte)'
+        Title.LabelBrush.Style = bsClear
+      end>
+    Foot.Brush.Color = clBtnFace
+    Foot.Font.Color = clBlue
+    Title.Brush.Color = clBtnFace
+    Title.Font.Color = clBlue
+    Title.Text.Strings = (
+      'TAChart'
+    )
+    Align = alClient
+    object CHARTLineSeries1: TLineSeries
+      LinePen.Color = clRed
+    end
+    object CHARTLineSeries2: TLineSeries
+      LinePen.Color = clGreen
+    end
+    object CHARTLineSeries3: TLineSeries
+      LinePen.Color = clBlue
+    end
+    object CHARTLineSeries4: TLineSeries
+    end
+  end
+  object P__CONTROL: TPanel
+    Left = 0
+    Height = 74
+    Top = 276
+    Width = 540
+    Align = alBottom
+    ClientHeight = 74
+    ClientWidth = 540
+    TabOrder = 1
+    object PC__CONTROL: TPageControl
+      Left = 1
+      Height = 72
+      Top = 1
+      Width = 538
+      ActivePage = TS__GAMMA
+      Align = alClient
+      TabIndex = 0
+      TabOrder = 0
+      TabPosition = tpBottom
+      object TS__GAMMA: TTabSheet
+        Caption = 'Gamma'
+        ClientHeight = 44
+        ClientWidth = 530
+        object TB__GAMMA: TTrackBar
+          Left = 15
+          Height = 44
+          Top = 0
+          Width = 515
+          Frequency = 10
+          Max = 100
+          Min = -100
+          Position = 0
+          Align = alClient
+          OnMouseUp = TB__GAMMAMouseUp
+          OnKeyPress = TB__GAMMAKeyPress
+          TabOrder = 0
+        end
+        object L__GAMMA: TLabel
+          Left = 0
+          Height = 44
+          Top = 0
+          Width = 15
+          Align = alLeft
+          Caption = '---'
+          ParentColor = False
+        end
+      end
+      object TS__HISTOGRAM: TTabSheet
+        Caption = 'Histogramm'
+      end
+      object TS__POINTS: TTabSheet
+        Caption = 'Punkte'
+      end
+    end
+  end
+  object P__TOOLS: TPanel
+    Left = 470
+    Height = 276
+    Top = 0
+    Width = 70
+    Align = alRight
+    ClientHeight = 276
+    ClientWidth = 70
+    TabOrder = 2
+    object GBX__COLORS: TGroupBox
+      Left = 1
+      Height = 183
+      Top = 1
+      Width = 68
+      Align = alTop
+      Caption = 'Farben'
+      ClientHeight = 163
+      ClientWidth = 64
+      TabOrder = 0
+      object P__RED: TPanel
+        Left = 0
+        Height = 32
+        Top = 40
+        Width = 62
+        Anchors = [akTop, akLeft, akRight]
+        ClientHeight = 32
+        ClientWidth = 62
+        Color = clRed
+        ParentColor = False
+        TabOrder = 0
+        object CBX__RED: TCheckBox
+          Left = 8
+          Height = 19
+          Top = 8
+          Width = 38
+          Caption = 'Rot'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
+      end
+      object P__GREEN: TPanel
+        Left = 0
+        Height = 32
+        Top = 72
+        Width = 62
+        Anchors = [akTop, akLeft, akRight]
+        ClientHeight = 32
+        ClientWidth = 62
+        Color = clLime
+        ParentColor = False
+        TabOrder = 1
+        object CBX__GREEN: TCheckBox
+          Left = 8
+          Height = 19
+          Top = 8
+          Width = 46
+          Caption = 'Grün'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
+      end
+      object P__BLUE: TPanel
+        Left = 0
+        Height = 32
+        Top = 104
+        Width = 62
+        Anchors = [akTop, akLeft, akRight]
+        ClientHeight = 32
+        ClientWidth = 62
+        Color = clSkyBlue
+        ParentColor = False
+        TabOrder = 2
+        object CBX__BLUE: TCheckBox
+          Left = 8
+          Height = 19
+          Top = 8
+          Width = 43
+          Caption = 'Blau'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
+      end
+    end
+  end
+end
