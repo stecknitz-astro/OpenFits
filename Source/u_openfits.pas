@@ -99,20 +99,22 @@ type
     marFloatBitmap_G: array of array of Real;
     marFloatBitmap_B: array of array of Real;
     miXDim, miYDim: Integer;
+    miMaxIntensity: Integer;
 
     procedure SaveImg();
     procedure OpenFitsMenuClick(Sender: TObject);
     procedure GetHistogramData(ABitMap: Graphics.TBitmap);
+    procedure RegisterFloatBitmap(ABitMap: Graphics.TBitmap);
     function GetGammaVal(rIntensity: Real; rGamma: Real): Word;
     function GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
-    procedure RegisterFloatBitmap(ABitMap: Graphics.TBitmap);
+    function GetCutLowHighVal(rIntensity: Real; rArgL, rArgH: Real): Word;
 
   public
     miActiveImgForm: Integer;
     msLANG_ID: string;
     mbNewLoaded: Boolean;
 
-    procedure ModifyActiveImage(rArg: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
+    procedure ModifyActiveImage(rArg, rArg2: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
     procedure UnregisterFloatBitmap();
 
   end;
@@ -130,6 +132,40 @@ implementation
 
 { TF__OPENFITS }
 
+function TF__OPENFITS.GetCutLowHighVal(rIntensity: Real; rArgL, rArgH: Real): Word;
+begin
+  if(rIntensity <= rArgL) then
+    Result := 0
+  else if(rIntensity >= rArgH) then
+    Result := miMaxIntensity//ciBit_16
+  else
+    Result := Trunc(rIntensity);
+
+end;
+
+function TF__OPENFITS.GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
+var
+  rX, rY: Real;
+const
+  rcXMax = 10.0;
+begin
+  rX := rIntensity*rcXMax/(ciBit_16-1); // [0..10]!
+  rY := (0.5*Pi + arctan2((rX - rcXMax/2)*rHist,1))/Pi *(ciBit_16-1);
+
+  Result := Trunc(rY);
+end;
+
+
+function TF__OPENFITS.GetGammaVal(rIntensity: Real; rGamma: Real): Word;
+var
+  rX, rY: Real;
+begin
+  rX := rIntensity/(ciBit_16-1); // [0..1]!
+  rY := Power(rX,1.0/rGamma) *(ciBit_16-1);
+
+  Result := Trunc(rY);
+end;
+
 procedure TF__OPENFITS.UnregisterFloatBitmap();
 begin
   SetLength(marFloatBitmap_R, 0, 0);
@@ -140,31 +176,7 @@ begin
   miYDim := 0;
 end;
 
-function TF__OPENFITS.GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
-var
-  rX, rY: Real;
-const
-  rcXMax = 10.0;
-begin
-  rX := rIntensity*rcXMax/ciBit_16; // [0..10]!
-  rY := (0.5*Pi + arctan2((rX - rcXMax/2)*rHist,1))/Pi *ciBit_16;
-
-  Result := Trunc(rY);
-end;
-
-
-function TF__OPENFITS.GetGammaVal(rIntensity: Real; rGamma: Real): Word;
-var
-  rX, rY: Real;
-begin
-  rX := rIntensity/ciBit_16; // [0..1]!
-  rY := Power(rX,1.0/rGamma) *ciBit_16;
-
-  Result := Trunc(rY);
-end;
-
-
-procedure TF__OPENFITS.ModifyActiveImage(rArg: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
+procedure TF__OPENFITS.ModifyActiveImage(rArg,rArg2: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
 var
   TempIntfImg: TLazIntfImage;
   ImgHandle,ImgMaskHandle: HBitmap;
@@ -202,10 +214,6 @@ begin
     for py:=0 to miYDim-1 do begin
       for px:=0 to miXDim-1 do begin
 
-        CurColor.red:=Trunc(marFloatBitmap_R[px,py]);
-        CurColor.green:=Trunc(marFloatBitmap_G[px,py]);
-        CurColor.blue:=Trunc(marFloatBitmap_B[px,py]);
-
         case OpenFitsPixFunction of
           ofpGamma:
           begin
@@ -218,6 +226,18 @@ begin
             if(bRed) then CurColor.Red:=GetHistContrastVal(marFloatBitmap_R[px,py],rArg);
             if(bGreen) then CurColor.Green:=GetHistContrastVal(marFloatBitmap_G[px,py],rArg);
             if(bBlue) then CurColor.Blue:=GetHistContrastVal(marFloatBitmap_B[px,py],rArg);
+          end;
+          ofpCutLowHigh:
+          begin
+            if(bRed) then CurColor.Red:=GetCutLowHighVal(marFloatBitmap_R[px,py],rArg,rArg2);
+            if(bGreen) then CurColor.Green:=GetCutLowHighVal(marFloatBitmap_G[px,py],rArg,rArg2);
+            if(bBlue) then CurColor.Blue:=GetCutLowHighVal(marFloatBitmap_B[px,py],rArg,rArg2);
+          end;
+          else
+          begin
+            CurColor.red:=Trunc(marFloatBitmap_R[px,py]);
+            CurColor.green:=Trunc(marFloatBitmap_G[px,py]);
+            CurColor.blue:=Trunc(marFloatBitmap_B[px,py]);
           end;
         end; // case
 
@@ -260,6 +280,7 @@ begin
 
   miXDim := SrcIntfImg.Width;
   miYDim := SrcIntfImg.Height;
+  miMaxIntensity := 0;
 
   for py:=0 to SrcIntfImg.Height-1 do
   begin
@@ -270,6 +291,13 @@ begin
       marFloatBitmap_R[px,py] := CurColor.red;
       marFloatBitmap_G[px,py] := CurColor.green;
       marFloatBitmap_B[px,py] := CurColor.blue;
+
+      if(CurColor.red > miMaxIntensity) then
+        miMaxIntensity := CurColor.red;
+      if(CurColor.green> miMaxIntensity) then
+        miMaxIntensity := CurColor.green;
+      if(CurColor.blue > miMaxIntensity) then
+        miMaxIntensity := CurColor.blue;
 
     end;
   end;
@@ -283,9 +311,9 @@ var
    SrcIntfImg: TLazIntfImage;
    i,px, py: Integer;
    CurColor: TFPColor;
-   iaHistColorRed: array[0..ciBit_16] of Integer;
-   iaHistColorGreen: array[0..ciBit_16] of Integer;
-   iaHistColorBlue: array[0..ciBit_16] of Integer;
+   iaHistColorRed: array[0..ciBit_16-1] of Integer;
+   iaHistColorGreen: array[0..ciBit_16-1] of Integer;
+   iaHistColorBlue: array[0..ciBit_16-1] of Integer;
    iCnt: Integer;
    iMax: Integer;
 begin
@@ -298,7 +326,7 @@ begin
    SrcIntfImg:=TLazIntfImage.Create(0,0);
    SrcIntfImg.LoadFromBitmap(ABitmap.Handle,ABitmap.MaskHandle);
 
-   for i:=0 to ciBit_16 do
+   for i:=0 to ciBit_16-1 do
    begin
      iaHistColorRed[i] := 0;
      iaHistColorGreen[i] := 0;
@@ -338,6 +366,8 @@ begin
      (F__HISTOGRAM.CHART.Series[1] as TLineSeries).Clear;
      (F__HISTOGRAM.CHART.Series[2] as TLineSeries).Clear;
      (F__HISTOGRAM.CHART.Series[3] as TLineSeries).Clear;
+     //(F__HISTOGRAM.CHART.Series[4] as TConstantSeries).Clear;
+     //(F__HISTOGRAM.CHART.Series[5] as TConstantSeries).Clear;
 
      for i:=0 to ciBit_16-1 do
      begin
@@ -345,7 +375,7 @@ begin
        (F__HISTOGRAM.CHART.Series[1] as TLineSeries).AddXY(i,iaHistColorGreen[i]/iMax * 100.0);
        (F__HISTOGRAM.CHART.Series[2] as TLineSeries).AddXY(i,iaHistColorBlue[i]/iMax * 100.0);
         case F__HISTOGRAM.PC__CONTROL.ActivePageIndex of
-         0: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,1.0*i/ciBit_16 * 100.0);
+         0: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,1.0*i/(ciBit_16-1) * 100.0);
          1: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,50.0);
         end;
      end;

@@ -8,47 +8,6 @@ object F__HISTOGRAM: TF__HISTOGRAM
   ClientWidth = 540
   OnActivate = FormActivate
   LCLVersion = '2.0.6.0'
-  object CHART: TChart
-    Left = 0
-    Height = 276
-    Top = 0
-    Width = 470
-    AxisList = <    
-      item
-        Marks.LabelBrush.Style = bsClear
-        Minors = <>
-        Title.LabelFont.Orientation = 900
-        Title.Visible = True
-        Title.Caption = '%'
-        Title.LabelBrush.Style = bsClear
-      end    
-      item
-        Alignment = calBottom
-        Marks.LabelBrush.Style = bsClear
-        Minors = <>
-        Title.Caption = 'Pixelwert 0 - 65536 (2 Byte)'
-        Title.LabelBrush.Style = bsClear
-      end>
-    Foot.Brush.Color = clBtnFace
-    Foot.Font.Color = clBlue
-    Title.Brush.Color = clBtnFace
-    Title.Font.Color = clBlue
-    Title.Text.Strings = (
-      'TAChart'
-    )
-    Align = alClient
-    object CHARTLineSeries1: TLineSeries
-      LinePen.Color = clRed
-    end
-    object CHARTLineSeries2: TLineSeries
-      LinePen.Color = clGreen
-    end
-    object CHARTLineSeries3: TLineSeries
-      LinePen.Color = clBlue
-    end
-    object CHARTLineSeries4: TLineSeries
-    end
-  end
   object P__CONTROL: TPanel
     Left = 0
     Height = 74
@@ -57,7 +16,7 @@ object F__HISTOGRAM: TF__HISTOGRAM
     Align = alBottom
     ClientHeight = 74
     ClientWidth = 540
-    TabOrder = 1
+    TabOrder = 0
     object PC__CONTROL: TPageControl
       Left = 1
       Height = 72
@@ -141,7 +100,7 @@ object F__HISTOGRAM: TF__HISTOGRAM
     Align = alRight
     ClientHeight = 276
     ClientWidth = 70
-    TabOrder = 2
+    TabOrder = 1
     object GBX__COLORS: TGroupBox
       Left = 1
       Height = 183
@@ -217,6 +176,146 @@ object F__HISTOGRAM: TF__HISTOGRAM
           State = cbChecked
           TabOrder = 0
         end
+      end
+    end
+  end
+  object P__CHART_CONTROL: TPanel
+    Left = 0
+    Height = 276
+    Top = 0
+    Width = 470
+    Align = alClient
+    ClientHeight = 276
+    ClientWidth = 470
+    TabOrder = 2
+    object CHART: TChart
+      Left = 1
+      Height = 245
+      Top = 1
+      Width = 468
+      AxisList = <      
+        item
+          Marks.LabelBrush.Style = bsClear
+          Minors = <>
+          Title.LabelFont.Orientation = 900
+          Title.Visible = True
+          Title.Caption = '%'
+          Title.LabelBrush.Style = bsClear
+        end      
+        item
+          Alignment = calBottom
+          Marks.LabelBrush.Style = bsClear
+          Minors = <>
+          Title.Caption = 'Pixelwert 0 - 65536 (2 Byte)'
+          Title.LabelBrush.Style = bsClear
+        end>
+      Foot.Brush.Color = clBtnFace
+      Foot.Font.Color = clBlue
+      Margins.Left = 0
+      Margins.Right = 30
+      Title.Brush.Color = clBtnFace
+      Title.Font.Color = clBlue
+      Title.Text.Strings = (
+        'TAChart'
+      )
+      Align = alClient
+      object CHARTLineSeries1: TLineSeries
+        LinePen.Color = clRed
+      end
+      object CHARTLineSeries2: TLineSeries
+        LinePen.Color = clGreen
+      end
+      object CHARTLineSeries3: TLineSeries
+        LinePen.Color = clBlue
+      end
+      object CHARTLineSeries4: TLineSeries
+      end
+      object CHARTConstantLine1: TConstantLine
+        Arrow.BaseLength = 10
+        Arrow.Inverted = True
+        Arrow.Visible = True
+        Arrow.Width = 3
+        LineStyle = lsVertical
+        Pen.Width = 2
+        Position = 0
+      end
+      object CHARTConstantLine2: TConstantLine
+        Arrow.BaseLength = 10
+        Arrow.Inverted = True
+        Arrow.Visible = True
+        Arrow.Width = 3
+        LineStyle = lsVertical
+        Pen.Color = clRed
+        Pen.Width = 2
+        Position = 0
+      end
+    end
+    object P__CHART_LR_CONTROL: TPanel
+      Left = 1
+      Height = 29
+      Top = 246
+      Width = 468
+      Align = alBottom
+      ClientHeight = 29
+      ClientWidth = 468
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 1
+      object P__LINE_SEL_L: TPanel
+        Left = 1
+        Height = 27
+        Top = 1
+        Width = 23
+        Align = alLeft
+        Caption = 'L'
+        Color = clBlack
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 0
+        OnClick = P__LINE_SEL_LClick
+      end
+      object P__LINE_SEL_R: TPanel
+        Left = 444
+        Height = 27
+        Top = 1
+        Width = 23
+        Align = alRight
+        Caption = 'H'
+        Color = clRed
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        TabOrder = 1
+        OnClick = P__LINE_SEL_RClick
+      end
+      object TB__LINE: TTrackBar
+        Left = 24
+        Height = 27
+        Top = 1
+        Width = 420
+        Max = 100
+        OnChange = TB__LINEChange
+        Position = 0
+        Align = alClient
+        TabOrder = 2
       end
     end
   end

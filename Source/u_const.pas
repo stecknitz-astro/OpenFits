@@ -42,7 +42,7 @@ const
   csVersionSubSub = '1';
 
 type
-  TOpenFitsPixFunction = (ofpGamma, ofpHist, ofpSqrt, ofpPower, ofpMult, ofpAdd, ofpMinus, ofpDiv);
+  TOpenFitsPixFunction = (ofpGamma, ofpHist, ofpCutLowHigh, ofpSqrt, ofpPower, ofpMult, ofpAdd, ofpMinus, ofpDiv);
 
   TFloatColor = record
       rRed,rGreen,rBlue,rAlpha : Real;

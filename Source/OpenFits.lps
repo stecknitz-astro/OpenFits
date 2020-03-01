@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="11"/>
     <BuildModes Active="Default"/>
-    <Units Count="33">
+    <Units Count="36">
       <Unit0>
         <Filename Value="OpenFits.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="103"/>
+        <UsageCount Value="115"/>
       </Unit0>
       <Unit1>
         <Filename Value="u_openfits.pas"/>
@@ -21,10 +21,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_OpenFits"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="324"/>
-        <CursorPos X="25" Y="339"/>
-        <UsageCount Value="103"/>
+        <TopLine Value="121"/>
+        <CursorPos X="50" Y="146"/>
+        <UsageCount Value="115"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -34,7 +35,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="145"/>
         <CursorPos X="25" Y="160"/>
-        <UsageCount Value="103"/>
+        <UsageCount Value="115"/>
         <Bookmarks Count="1">
           <Item0 X="3" Y="560"/>
         </Bookmarks>
@@ -48,7 +49,7 @@
         <UnitName Value="U_ImageForm"/>
         <EditorIndex Value="3"/>
         <CursorPos Y="25"/>
-        <UsageCount Value="94"/>
+        <UsageCount Value="106"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit3>
@@ -59,9 +60,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="155"/>
-        <CursorPos X="45" Y="188"/>
-        <UsageCount Value="69"/>
+        <TopLine Value="164"/>
+        <CursorPos Y="185"/>
+        <UsageCount Value="81"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit4>
@@ -69,8 +70,8 @@
         <Filename Value="u_const.pas"/>
         <IsPartOfProject Value="True"/>
         <TopLine Value="18"/>
-        <CursorPos X="46" Y="45"/>
-        <UsageCount Value="62"/>
+        <CursorPos X="59" Y="45"/>
+        <UsageCount Value="74"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -81,7 +82,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
         <CursorPos Y="25"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="64"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -91,50 +92,50 @@
         <UnitName Value="U_Translation"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="25"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="63"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsDataRead.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="262"/>
         <CursorPos X="18" Y="279"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit8>
       <Unit9>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsGraphics.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1883"/>
         <CursorPos X="13" Y="1906"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit9>
       <Unit10>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsCommon.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="496"/>
         <CursorPos X="3" Y="513"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit10>
       <Unit11>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsMath.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit11>
       <Unit12>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsOrderByte.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit12>
       <Unit13>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsString.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="31"/>
         <CursorPos X="12" Y="48"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit13>
       <Unit14>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsPalettes.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit14>
       <Unit15>
         <Filename Value="C:\lazarus\lcl\graphics.pp"/>
@@ -142,14 +143,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1776"/>
         <CursorPos X="27" Y="1811"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit15>
       <Unit16>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\classes\classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="930"/>
         <CursorPos X="3" Y="947"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit16>
       <Unit17>
         <Filename Value="C:\lazarus\lcl\intfgraphics.pas"/>
@@ -157,13 +158,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3609"/>
         <CursorPos Y="3628"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="16"/>
       </Unit17>
       <Unit18>
         <Filename Value="..\..\delphitiffreader-master\main.dfm"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit18>
       <Unit19>
@@ -171,7 +172,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="186"/>
         <CursorPos X="21" Y="203"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit19>
       <Unit20>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-image\src\fpreadtiff.pas"/>
@@ -179,7 +180,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="593"/>
         <CursorPos X="17" Y="610"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit20>
       <Unit21>
         <Filename Value="C:\lazarus\ide\lazarus.pp"/>
@@ -187,7 +188,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="125"/>
         <CursorPos Y="165"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit21>
       <Unit22>
         <Filename Value="C:\lazarus\ide\debugmanager.pas"/>
@@ -195,7 +196,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3085"/>
         <CursorPos Y="3106"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit22>
       <Unit23>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-image\src\fpreadtiffV2.pas"/>
@@ -203,20 +204,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="22" Y="23"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit23>
       <Unit24>
         <Filename Value="..\..\Albireo\source\U_AstroToolBox.pas"/>
-        <EditorIndex Value="7"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="18"/>
       </Unit24>
       <Unit25>
         <Filename Value="C:\lazarus\lcl\lcltype.pp"/>
         <UnitName Value="LCLType"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="40" Y="4"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit25>
       <Unit26>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-image\src\fpimage.pp"/>
@@ -224,30 +224,30 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="51" Y="29"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
       </Unit26>
       <Unit27>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\math.pp"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="299"/>
         <CursorPos X="20" Y="329"/>
-        <UsageCount Value="30"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="29"/>
       </Unit27>
       <Unit28>
         <Filename Value="C:\lazarus\components\tachart\tagraph.pas"/>
         <UnitName Value="TAGraph"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="2035"/>
-        <CursorPos Y="2050"/>
-        <UsageCount Value="6"/>
+        <CursorPos Y="2051"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit28>
       <Unit29>
         <Filename Value="C:\lazarus\lcl\include\picture.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="577"/>
         <CursorPos Y="595"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit29>
       <Unit30>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -255,146 +255,169 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1144"/>
         <CursorPos X="14" Y="1161"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit30>
       <Unit31>
         <Filename Value="..\..\Albireo\source\U_ALib.pas"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="953"/>
         <CursorPos X="44" Y="980"/>
-        <UsageCount Value="11"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="15"/>
       </Unit31>
       <Unit32>
         <Filename Value="u_translation.pas"/>
         <UnitName Value="U_Translation"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <TopLine Value="217"/>
         <CursorPos X="14" Y="235"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="16"/>
         <Loaded Value="True"/>
       </Unit32>
+      <Unit33>
+        <Filename Value="C:\lazarus\components\tachart\taseries.pas"/>
+        <UnitName Value="TASeries"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="311"/>
+        <CursorPos X="14" Y="328"/>
+        <UsageCount Value="11"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="C:\lazarus\lcl\comctrls.pp"/>
+        <UnitName Value="ComCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2771"/>
+        <CursorPos X="14" Y="2787"/>
+        <UsageCount Value="9"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="44"/>
+        <CursorPos Y="62"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit35>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="..\..\Albireo\source\U_ALib.pas"/>
-        <Caret Line="972" Column="97" TopLine="943"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="186" TopLine="164"/>
       </Position1>
       <Position2>
-        <Filename Value="..\..\Albireo\source\U_ALib.pas"/>
-        <Caret Line="974" Column="96" TopLine="945"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="187" TopLine="164"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\Albireo\source\U_ALib.pas"/>
-        <Caret Line="978" Column="55" TopLine="949"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="188" Column="28" TopLine="164"/>
       </Position3>
       <Position4>
-        <Filename Value="..\..\Albireo\source\U_ALib.pas"/>
-        <Caret Line="982" Column="51" TopLine="953"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="185" TopLine="164"/>
       </Position4>
       <Position5>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="149" Column="4" TopLine="130"/>
+        <Filename Value="C:\lazarus\components\tachart\tagraph.pas"/>
+        <Caret Line="2050" TopLine="2035"/>
       </Position5>
       <Position6>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="143" Column="23" TopLine="122"/>
+        <Filename Value="C:\lazarus\components\tachart\tagraph.pas"/>
+        <Caret Line="2051" TopLine="2035"/>
       </Position6>
       <Position7>
-        <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\math.pp"/>
-        <Caret Line="305" Column="10" TopLine="281"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="186" TopLine="164"/>
       </Position7>
       <Position8>
-        <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\math.pp"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="187" TopLine="164"/>
       </Position8>
       <Position9>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="104" Column="38" TopLine="89"/>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <Caret Line="133" TopLine="115"/>
       </Position9>
       <Position10>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="147" Column="19" TopLine="123"/>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <Caret Line="61" TopLine="43"/>
       </Position10>
       <Position11>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="155" Column="28" TopLine="124"/>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <Caret Line="84" TopLine="66"/>
       </Position11>
       <Position12>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="159" Column="16" TopLine="125"/>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <Caret Line="87" TopLine="66"/>
       </Position12>
       <Position13>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="153" Column="16" TopLine="125"/>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <Caret Line="89" TopLine="66"/>
       </Position13>
       <Position14>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="102" TopLine="87"/>
+        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
+        <Caret Line="92" TopLine="66"/>
       </Position14>
       <Position15>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="103" TopLine="87"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="195" Column="3" TopLine="182"/>
       </Position15>
       <Position16>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="104" TopLine="87"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="193" TopLine="182"/>
       </Position16>
       <Position17>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="107" Column="14" TopLine="87"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="196" TopLine="182"/>
       </Position17>
       <Position18>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="150" Column="22" TopLine="132"/>
+        <Caret Line="199" TopLine="182"/>
       </Position18>
       <Position19>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="436" TopLine="434"/>
+        <Caret Line="193" TopLine="212"/>
       </Position19>
       <Position20>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="105" Column="31" TopLine="88"/>
+        <Caret Line="235" TopLine="213"/>
       </Position20>
       <Position21>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="168" Column="35" TopLine="141"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="137" TopLine="118"/>
       </Position21>
       <Position22>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="158" Column="33" TopLine="142"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="138" TopLine="118"/>
       </Position22>
       <Position23>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="167" Column="23" TopLine="148"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="142" TopLine="118"/>
       </Position23>
       <Position24>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="168" Column="23" TopLine="149"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="145" TopLine="118"/>
       </Position24>
       <Position25>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="167" Column="23" TopLine="148"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="220" TopLine="209"/>
       </Position25>
       <Position26>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="162" Column="14" TopLine="148"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="235" TopLine="209"/>
       </Position26>
       <Position27>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="98" TopLine="76"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="236" TopLine="212"/>
       </Position27>
       <Position28>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="184" Column="44" TopLine="151"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="220" TopLine="212"/>
       </Position28>
       <Position29>
-        <Filename Value="u_translation.pas"/>
-        <Caret Line="34" Column="16"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="185" TopLine="164"/>
       </Position29>
       <Position30>
-        <Filename Value="u_translation.pas"/>
-        <Caret Line="235" Column="15" TopLine="217"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="235" Column="48" TopLine="213"/>
       </Position30>
     </JumpHistory>
     <RunParams>
