@@ -3,6 +3,9 @@ Open Souce variant of Jens Dierk's famous Fitswork astroimage processing tool
 
 Programming tool / Language: Lazarus / FreePascal
 
+Integrated library to operate with FITS file format:
+<br> Delafits (<https://github.com/felleroff/delafits>) 
+
 NEEDED HELP:
 
 1. Delafit extension --
