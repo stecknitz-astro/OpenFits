@@ -104,6 +104,7 @@ type
     procedure OpenFitsMenuClick(Sender: TObject);
     procedure GetHistogramData(ABitMap: Graphics.TBitmap);
     function GetGammaVal(rIntensity: Real; rGamma: Real): Word;
+    function GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
     procedure RegisterFloatBitmap(ABitMap: Graphics.TBitmap);
 
   public
@@ -139,12 +140,25 @@ begin
   miYDim := 0;
 end;
 
+function TF__OPENFITS.GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
+var
+  rX, rY: Real;
+const
+  rcXMax = 10.0;
+begin
+  rX := rIntensity*rcXMax/ciBit_16; // [0..10]!
+  rY := (0.5*Pi + arctan2((rX - rcXMax/2)*rHist,1))/Pi *ciBit_16;
+
+  Result := Trunc(rY);
+end;
+
+
 function TF__OPENFITS.GetGammaVal(rIntensity: Real; rGamma: Real): Word;
 var
   rX, rY: Real;
 begin
-  rX := rIntensity/ciBit_16;
-  rY := Power(rX,1.0/rGamma) *ciBit_16;  // [0..1]!
+  rX := rIntensity/ciBit_16; // [0..1]!
+  rY := Power(rX,1.0/rGamma) *ciBit_16;
 
   Result := Trunc(rY);
 end;
@@ -198,6 +212,12 @@ begin
             if(bRed) then CurColor.Red:=GetGammaVal(marFloatBitmap_R[px,py],rArg);
             if(bGreen) then CurColor.Green:=GetGammaVal(marFloatBitmap_G[px,py],rArg);
             if(bBlue) then CurColor.Blue:=GetGammaVal(marFloatBitmap_B[px,py],rArg);
+          end;
+          ofpHist:
+          begin
+            if(bRed) then CurColor.Red:=GetHistContrastVal(marFloatBitmap_R[px,py],rArg);
+            if(bGreen) then CurColor.Green:=GetHistContrastVal(marFloatBitmap_G[px,py],rArg);
+            if(bBlue) then CurColor.Blue:=GetHistContrastVal(marFloatBitmap_B[px,py],rArg);
           end;
         end; // case
 
@@ -324,7 +344,10 @@ begin
        (F__HISTOGRAM.CHART.Series[0] as TLineSeries).AddXY(i,iaHistColorRed[i]/iMax * 100.0);
        (F__HISTOGRAM.CHART.Series[1] as TLineSeries).AddXY(i,iaHistColorGreen[i]/iMax * 100.0);
        (F__HISTOGRAM.CHART.Series[2] as TLineSeries).AddXY(i,iaHistColorBlue[i]/iMax * 100.0);
-       (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,1.0*i/ciBit_16 * 100.0);
+        case F__HISTOGRAM.PC__CONTROL.ActivePageIndex of
+         0: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,1.0*i/ciBit_16 * 100.0);
+         1: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,50.0);
+        end;
      end;
 
      IniText(F__HISTOGRAM,msLANG_ID);

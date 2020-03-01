@@ -68,15 +68,16 @@ object F__HISTOGRAM: TF__HISTOGRAM
       TabIndex = 0
       TabOrder = 0
       TabPosition = tpBottom
+      OnChange = PC__CONTROLChange
       object TS__GAMMA: TTabSheet
         Caption = 'Gamma'
         ClientHeight = 44
         ClientWidth = 530
         object TB__GAMMA: TTrackBar
-          Left = 15
+          Left = 40
           Height = 44
           Top = 0
-          Width = 515
+          Width = 490
           Frequency = 10
           Max = 100
           Min = -100
@@ -90,14 +91,42 @@ object F__HISTOGRAM: TF__HISTOGRAM
           Left = 0
           Height = 44
           Top = 0
-          Width = 15
+          Width = 40
           Align = alLeft
+          Alignment = taCenter
+          AutoSize = False
           Caption = '---'
           ParentColor = False
         end
       end
       object TS__HISTOGRAM: TTabSheet
         Caption = 'Histogramm'
+        ClientHeight = 44
+        ClientWidth = 530
+        object TB__HIST: TTrackBar
+          Left = 40
+          Height = 44
+          Top = 0
+          Width = 490
+          Frequency = 10
+          Max = 100
+          Position = 5
+          Align = alClient
+          OnMouseUp = TB__HISTMouseUp
+          OnKeyUp = TB__HISTKeyUp
+          TabOrder = 0
+        end
+        object L__HIST: TLabel
+          Left = 0
+          Height = 44
+          Top = 0
+          Width = 40
+          Align = alLeft
+          Alignment = taCenter
+          AutoSize = False
+          Caption = '---'
+          ParentColor = False
+        end
       end
       object TS__POINTS: TTabSheet
         Caption = 'Punkte'

@@ -47,6 +47,7 @@ type
     CHARTLineSeries4: TLineSeries;
     CBX__RED: TCheckBox;
     GBX__COLORS: TGroupBox;
+    L__HIST: TLabel;
     L__GAMMA: TLabel;
     P__RED: TPanel;
     PC__CONTROL: TPageControl;
@@ -55,15 +56,21 @@ type
     P__TOOLS: TPanel;
     P__CONTROL: TPanel;
     TB__GAMMA: TTrackBar;
+    TB__HIST: TTrackBar;
     TS__POINTS: TTabSheet;
     TS__HISTOGRAM: TTabSheet;
     TS__GAMMA: TTabSheet;
     procedure FormActivate(Sender: TObject);
+    procedure PC__CONTROLChange(Sender: TObject);
     procedure TB__GAMMAKeyPress(Sender: TObject; var Key: char);
     procedure TB__GAMMAMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure TB__HISTKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure TB__HISTMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     procedure GammaChange();
+    procedure HistChange();
   public
 
   end;
@@ -79,6 +86,31 @@ uses
 {$R *.lfm}
 
 { TF__HISTOGRAM }
+
+procedure TF__HISTOGRAM.HistChange();
+var
+  i: Integer;
+  rX, rY: Real;
+  rContrast: Real; // Contrast values
+const
+  rcXMax = 10.0;
+begin
+  rContrast := TB__HIST.Position/10.0;
+
+  L__HIST.Caption := FloatToStrF(rContrast,ffFixed,8,2);
+
+  (CHART.Series[3] as TLineSeries).Clear;
+  for i:=1 to ciBit_16-1 do
+  begin
+    rX := rcXMax*i/ciBit_16;
+    rY := ((Pi/2.0) + arctan2(rContrast*(rX - rcXMax/2.0),1))/Pi*100; // https://de.wikipedia.org/wiki/Gammakorrektur
+    (CHART.Series[3] as TLineSeries).AddXY(i,rY);
+  end;
+
+  F__OPENFITS.ModifyActiveImage(rContrast,ofpHist,CBX__RED.Checked,CBX__GREEN.Checked,CBX__BLUE.Checked);
+
+end;
+
 
 procedure TF__HISTOGRAM.GammaChange();
 var
@@ -118,14 +150,40 @@ begin
   GammaChange();
 end;
 
+procedure TF__HISTOGRAM.TB__HISTKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  HistChange();
+end;
+
+procedure TF__HISTOGRAM.TB__HISTMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  HistChange();
+end;
+
 procedure TF__HISTOGRAM.FormActivate(Sender: TObject);
 begin
   if(F__OPENFITS.mbNewLoaded) then
   begin
+    PC__CONTROL.ActivePageIndex:=0;
     TB__GAMMA.Position:=0;
     L__GAMMA.Caption := FloatToStrF(1.0,ffFixed,8,2);
+    TB__HIST.Position:=5;
   end;
   F__OPENFITS.mbNewLoaded := false;
+end;
+
+procedure TF__HISTOGRAM.PC__CONTROLChange(Sender: TObject);
+begin
+  case PC__CONTROL.ActivePageIndex of
+    0: GammaChange();
+    1:
+    begin
+      MessageDlg('OpenFits Histogram','TAB Hist/Contrast: Experimental challenge',mtInformation,[mbOK],0);
+      HistChange();
+    end;
+  end;
 end;
 
 

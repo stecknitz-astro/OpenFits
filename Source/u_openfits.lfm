@@ -141,7 +141,7 @@ object F__OPENFITS: TF__OPENFITS
   end
   object ODLG__OPENFITS: TOpenDialog
     DefaultExt = '.fit'
-    Filter = 'Fits-SingleImage|*.fit|TIFF-24Bit|*.tif;*.tiff|PNG Portable Network Graphics|*.png|JPEG Joint Photographic Experts Group|*.jpg; *.jpeg|MBP Bitmap|*.bmp|GIF Graphics Interchange Format|*.gif'
+    Filter = 'Fits-SingleImage|*.fit|TIFF-24Bit|*.tif;*.tiff|PNG Portable Network Graphics|*.png|JPEG Joint Photographic Experts Group|*.jpg; *.jpeg|BMP Bitmap|*.bmp|GIF Graphics Interchange Format|*.gif'
     left = 120
   end
   object SDLG__IMG: TSavePictureDialog
