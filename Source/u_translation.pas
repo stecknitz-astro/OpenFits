@@ -38,7 +38,9 @@ function GermanChars(sText: string): string;
 implementation
 
 function GermanChars(sText: string): string;
-// Replaces AE by Ä, ae by ä, OE by ö a.s.o
+{2020/03/01 / fs
+Replaces AE by Ä, ae by ä, OE by ö a.s.o
+}
 begin
   Result := sText;
   if(AnsiContainsStr(sText,'uenos')) then exit;
@@ -55,6 +57,9 @@ begin
 end;
 
 function TranslateTextTo(sLANG_ID, sText: string): string;
+{2020/03/01 / fs
+Identifies a text string and returns a text string in a languaged addressed by sLANG_ID parameter
+}
 begin
   Result := sText;
 
@@ -233,6 +238,12 @@ begin
 end;
 
 procedure IniText(Form: TForm; sLANG_ID: string);
+{2020/03/01 / fs
+- Runs on any form component
+- Identivies the form component class by naming convention
+- Identifies text properties
+- Performs the translation function on any detected text property
+}
 var
   i: Integer;
   sCompName, sText, sTransText: string;

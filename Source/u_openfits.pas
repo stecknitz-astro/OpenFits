@@ -23,6 +23,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 }
 
+{
+ABOUT OPENFITS
+
+Unfortunately the author of the famous FITSWORK astroimage manipulation program (Jens Dierks)
+has stopped the development for some years.
+
+In the meantime the program is used by numberous astrophotography enthusiasts to develop their astroimages.
+
+This project - OpenFits - is an approach the establish a free astroimage manipulation programm which can be
+modified and compiled by anybody. The functionality, design and work-flow will be strongly influenced by FITSWORK.
+
+The original FITSWORK was compiled whith DELPHI. Similar, the OpenFits approach sources can be compiled
+with the LAZARUS IDE, which is  a freely available DELPHI variant.
+You can download the LAZARUS IDE here: www.lazarus-ide.org
+Furthermore, the LAZARUS IDE enables parallel developent for MS Windows and e.g. MACOS
+by usage of the same OpenFits source files.
+
+Any FREEPASCAL developer is envited to contribute to this project!
+
+}
+
 {$mode objfpc}{$H+}
 
 interface
@@ -37,7 +58,7 @@ uses
   IntfGraphics, LCLType, StdCtrls, TAGraph, TASeries, FPimage;
 
 const
-  ciWindowPosOffset = 40;
+  ciWindowPosOffset = 40; // Used for opended windows under the main control window of OpenFits
 
 type
 
@@ -90,16 +111,21 @@ type
     procedure MENU__WINDOW_SIDEBYSIDEClick(Sender: TObject);
     procedure MENU__WINDOW_STACKEDClick(Sender: TObject);
   private
+    // Special Delafits objects
+
     FFit: TFitsFileBitmap;
     FRgn: TRgn;
-    mslImgLst: TStringList;
+
+    // OpenFits objects
+
+    mslImgLst: TStringList; // Stringlist buffer containing the opened image windows
     mSrcIntfImg: TLazIntfImage; // Image modification memory
 
-    marFloatBitmap_R: array of array of Real;
-    marFloatBitmap_G: array of array of Real;
-    marFloatBitmap_B: array of array of Real;
-    miXDim, miYDim: Integer;
-    miMaxIntensity: Integer;
+    marFloatBitmap_R: array of array of Real; // Float buffer array - Intensity of red color pixel
+    marFloatBitmap_G: array of array of Real; // Float buffer array - Intensity of green color pixel
+    marFloatBitmap_B: array of array of Real; // Float buffer array - Intensity of blue color pixel
+    miXDim, miYDim: Integer; // Dimensions of the float buffer array
+    miMaxIntensity: Integer; // Maximum intensity value of the float buffer array
 
     procedure SaveImg();
     procedure OpenFitsMenuClick(Sender: TObject);
@@ -110,9 +136,9 @@ type
     function GetCutLowHighVal(rIntensity: Real; rArgL, rArgH: Real): Word;
 
   public
-    miActiveImgForm: Integer;
-    msLANG_ID: string;
-    mbNewLoaded: Boolean;
+    miActiveImgForm: Integer; // Index of the activated image window
+    msLANG_ID: string; // Current language ID: DE: German, EN - English
+    mbNewLoaded: Boolean; // Set to TRUE only, if a new image windos is opened. Used for special initializing activities
 
     procedure ModifyActiveImage(rArg, rArg2: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
     procedure UnregisterFloatBitmap();
@@ -133,6 +159,11 @@ implementation
 { TF__OPENFITS }
 
 function TF__OPENFITS.GetCutLowHighVal(rIntensity: Real; rArgL, rArgH: Real): Word;
+{2020/03/01 / fs
+Setting values to 0 if rIntensity is lower equal rArgL,
+setting values to miMaxIntensity if higher equal rArgH
+Used in histogram boundary cutting
+}
 begin
   if(rIntensity <= rArgL) then
     Result := 0
@@ -144,6 +175,9 @@ begin
 end;
 
 function TF__OPENFITS.GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
+{2020/03/01 / fs
+Evaluates a parametrized arctan value for contrast function in histogram
+}
 var
   rX, rY: Real;
 const
@@ -157,6 +191,9 @@ end;
 
 
 function TF__OPENFITS.GetGammaVal(rIntensity: Real; rGamma: Real): Word;
+{2020/02/23 / fs
+Evaluates the gamma power function for histogram modification
+}
 var
   rX, rY: Real;
 begin
@@ -167,6 +204,9 @@ begin
 end;
 
 procedure TF__OPENFITS.UnregisterFloatBitmap();
+{2020/02/23 / fs
+Clears the RGB-Float buffer array and sets the correspondig diminesions to zero
+}
 begin
   SetLength(marFloatBitmap_R, 0, 0);
   SetLength(marFloatBitmap_G, 0, 0);
@@ -177,6 +217,10 @@ begin
 end;
 
 procedure TF__OPENFITS.ModifyActiveImage(rArg,rArg2: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
+{2020/03/1 / fs
+General image modification function. Working on the RGB-float buffer array. Several modification functions
+can be addressed.
+}
 var
   TempIntfImg: TLazIntfImage;
   ImgHandle,ImgMaskHandle: HBitmap;
@@ -264,6 +308,10 @@ begin
 end;
 
 procedure TF__OPENFITS.RegisterFloatBitmap(ABitMap: Graphics.TBitmap);
+{2020/02/23 / fs
+Registers a selected imaga and writes the image values into
+the RGB-Float buffer array
+}
 var
    SrcIntfImg: TLazIntfImage;
    px, py: Integer;
@@ -307,6 +355,11 @@ begin
 end;
 
 procedure TF__OPENFITS.GetHistogramData(ABitMap: Graphics.TBitmap);
+{2020/02/23 / fs
+Evaluates the current Bitmap color counts and displays the resulting histogram.
+In dependence of the active tab a corresponding modifiaction curve (e.g. gamma or contrast)
+is displayed
+}
 var
    SrcIntfImg: TLazIntfImage;
    i,px, py: Integer;
@@ -387,6 +440,9 @@ begin
 end;
 
 procedure TF__OPENFITS.OpenFitsMenuClick(Sender: TObject);
+{2020/02/23 / fs
+Opens the correponding image which is addressed via the menu.tag
+}
 var
   iIndex: Integer;
 begin
@@ -399,6 +455,9 @@ begin
 end;
 
 procedure TF__OPENFITS.SaveImg();
+{2020/02/23 / fs
+Saves an image which is addressed by the miActiveForm index.
+}
 begin
   if(SDLG__IMG.Execute) and (Trim(SDLG__IMG.FileName) <> '') and (miActiveImgForm > -1) and (miActiveImgForm < mslImgLst.Count) then
   begin
@@ -408,6 +467,10 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__FILEOPENClick(Sender: TObject);
+{2020/02/23 / fs
+Opens the selected image via the fileopen dialogue.
+After opening a corresponding menue item is generated to re-open the image.
+}
 var
   sLowFileName: string;
   iIndex: Integer;
@@ -436,12 +499,10 @@ begin
       FRgn.Height := F__IMG.IMG.Height;
 
       FFit.BitmapRead(F__IMG.IMG.Picture.Bitmap, FRgn);
-      //FFit.BitmapRead(F__IMG.IMG__HIDDEN.Picture.Bitmap, FRgn);
     end
     else
     begin
       F__IMG.IMG.Picture.LoadFromFile(ODLG__OPENFITS.FileName);
-      //F__IMG.IMG__HIDDEN.Picture.LoadFromFile(ODLG__OPENFITS.FileName);
     end;
 
     RegisterFloatBitmap(F__IMG.IMG.Picture.Bitmap);
@@ -451,20 +512,20 @@ begin
 
     F__IMG.Show;
 
+    // Generate corresponding menu item for re-opening
     MenuItem := TMenuItem.Create(MMENU__OPENFITS);
     MenuItem.Caption:=ODLG__OPENFITS.FileName;
     MenuItem.OnClick:=@OpenFitsMenuClick;
     MenuItem.Tag:=iIndex;
     MENU__WINDOW.Add(MenuItem);
 
-    // Load image map into modification memory
-    //SrcIntfImg:=TLazIntfImage.Create(0,0);
-    //SrcIntfImg.LoadFromBitmap(ABitmap.Handle,ABitmap.MaskHandle);
-
   end;
 end;
 
 procedure TF__OPENFITS.MENU__HISTOGRAMClick(Sender: TObject);
+{2020/02/23 / fs
+Activates the Histogram using an image which is addressed by miActiveImgForm index
+}
 begin
 if(miActiveImgForm > -1) and (miActiveImgForm < mslImgLst.Count) and
   ((mslImgLst.Objects[miActiveImgForm] as TF__IMG).IMG.Picture.Width > 0) then
@@ -475,6 +536,9 @@ if(miActiveImgForm > -1) and (miActiveImgForm < mslImgLst.Count) and
 end;
 
 procedure TF__OPENFITS.MENU__INFOClick(Sender: TObject);
+{2020/02/23 / fs
+Displays the info-dialogue for OpenFits
+}
 begin
   F__INFO := TF__INFO.Create(nil);
   IniText(F__INFO,msLANG_ID);
@@ -483,6 +547,9 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__LANG_DEClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code for switching into German language
+}
 begin
   msLANG_ID := 'DE';
   IniText(F__OPENFITS,msLANG_ID);
@@ -491,6 +558,9 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__LANG_ENClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code for switching into English language
+}
 begin
   msLANG_ID := 'EN';
   IniText(F__OPENFITS,msLANG_ID);
@@ -499,6 +569,9 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__MINIMIZE_ALLClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code ti minimize all opended image windows
+}
 var
   i: Integer;
 begin
@@ -513,11 +586,17 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__SAVEClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code for saving the current image
+}
 begin
   SaveImg();
 end;
 
 procedure TF__OPENFITS.MENU__WINDOW_OVERLAPClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code to show all opened images in overlapped order
+}
 var
   i: Integer;
 begin
@@ -532,6 +611,9 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__WINDOW_SIDEBYSIDEClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code to show all opened images in side-by-side order
+}
 var
   i: Integer;
   iWindowWidth, iLeft: Integer;
@@ -556,6 +638,9 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__WINDOW_STACKEDClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code to show all opened images in stacked order
+}
 var
   i: Integer;
   iWindowHeight, iTop: Integer;
@@ -581,6 +666,12 @@ begin
 end;
 
 procedure TF__OPENFITS.FormCreate(Sender: TObject);
+{2020/02/23 / fs
+All things to do when OpenFits is created:
+- Initialize varaibles
+- Creating objects
+- Initialize language dependent texts
+}
 begin
   mslImgLst := TStringList.Create;
   miActiveImgForm := -1;
@@ -590,6 +681,9 @@ begin
 end;
 
 procedure TF__OPENFITS.FormDestroy(Sender: TObject);
+{2020/02/23 / fs
+All things to do when OpenFits is detroyed/freed e.g. freeing objects
+}
 var
   i: Integer;
 begin
@@ -605,12 +699,19 @@ begin
 end;
 
 procedure TF__OPENFITS.FormShow(Sender: TObject);
+{2020/02/23 / fs
+Things to do if the form is focused: Setting initial values of the window
+}
 begin
   Top := 0; Left := 0;
   Width := Screen.Width;
 end;
 
 procedure TF__OPENFITS.MENU__ADAPT_SIZEClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code to hamonize the window dimension with the displayed image of the selected windows identified
+with index miActiveImgForm
+}
 begin
   if(miActiveImgForm > -1) and (miActiveImgForm < mslImgLst.Count) and
     ((mslImgLst.Objects[miActiveImgForm] as TF__IMG).IMG.Picture.Width > 0) then
@@ -622,6 +723,9 @@ begin
 end;
 
 procedure TF__OPENFITS.MENU__ADAPT_SIZE_ALLClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code to hamonize window dimension with the displayed image carried out on all opened windows
+}
 var
   iIndex: Integer;
 begin
@@ -639,6 +743,9 @@ end;
 
 
 procedure TF__OPENFITS.MENU__CLOSEClick(Sender: TObject);
+{2020/02/23 / fs
+Menu code to close the OpenFits main window
+}
 begin
   Close;
 end;

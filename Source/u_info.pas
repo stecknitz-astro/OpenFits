@@ -61,6 +61,10 @@ implementation
 { TF__INFO }
 
 procedure TF__INFO.FormCreate(Sender: TObject);
+{2020/03/01 / fs
+Things to do when the Info-Form is created:
+Putting the version and author data into the form defined in unit U_Const.pas
+}
 begin
   P__APP_NAME.Caption:=csAppName;
   L__VERSION.Caption := csVersionMain + '.' + csVersionSub + '.' + csVersionSubSub;

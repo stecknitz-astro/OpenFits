@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="115"/>
+        <UsageCount Value="118"/>
       </Unit0>
       <Unit1>
         <Filename Value="u_openfits.pas"/>
@@ -23,9 +23,9 @@
         <UnitName Value="U_OpenFits"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="121"/>
-        <CursorPos X="50" Y="146"/>
-        <UsageCount Value="115"/>
+        <TopLine Value="136"/>
+        <CursorPos X="52" Y="152"/>
+        <UsageCount Value="118"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -35,7 +35,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="145"/>
         <CursorPos X="25" Y="160"/>
-        <UsageCount Value="115"/>
+        <UsageCount Value="118"/>
         <Bookmarks Count="1">
           <Item0 X="3" Y="560"/>
         </Bookmarks>
@@ -47,9 +47,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_ImageForm"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <CursorPos Y="25"/>
-        <UsageCount Value="106"/>
+        <UsageCount Value="109"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit3>
@@ -59,10 +59,9 @@
         <ComponentName Value="F__HISTOGRAM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="164"/>
-        <CursorPos Y="185"/>
-        <UsageCount Value="81"/>
+        <EditorIndex Value="6"/>
+        <CursorPos X="26" Y="194"/>
+        <UsageCount Value="84"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit4>
@@ -71,7 +70,7 @@
         <IsPartOfProject Value="True"/>
         <TopLine Value="18"/>
         <CursorPos X="59" Y="45"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="77"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -80,9 +79,10 @@
         <ComponentName Value="F__INFO"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <CursorPos Y="25"/>
-        <UsageCount Value="64"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="22"/>
+        <CursorPos X="78" Y="66"/>
+        <UsageCount Value="67"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -92,7 +92,7 @@
         <UnitName Value="U_Translation"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="25"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="66"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\libs\DeLaFit\delafits-master\Source\DeLaFitsDataRead.pas"/>
@@ -214,9 +214,11 @@
       <Unit25>
         <Filename Value="C:\lazarus\lcl\lcltype.pp"/>
         <UnitName Value="LCLType"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="40" Y="4"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="1292"/>
+        <CursorPos X="3" Y="1310"/>
         <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit25>
       <Unit26>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-image\src\fpimage.pp"/>
@@ -239,7 +241,7 @@
         <EditorIndex Value="7"/>
         <TopLine Value="2035"/>
         <CursorPos Y="2051"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit28>
       <Unit29>
@@ -267,10 +269,10 @@
       <Unit32>
         <Filename Value="u_translation.pas"/>
         <UnitName Value="U_Translation"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="217"/>
-        <CursorPos X="14" Y="235"/>
-        <UsageCount Value="16"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="387"/>
+        <CursorPos X="66" Y="245"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
       </Unit32>
       <Unit33>
@@ -291,14 +293,13 @@
       </Unit34>
       <Unit35>
         <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos Y="62"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="11"/>
       </Unit35>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="26" HistoryIndex="24">
       <Position1>
         <Filename Value="u_histogram.pas"/>
         <Caret Line="186" TopLine="164"/>
@@ -332,93 +333,77 @@
         <Caret Line="187" TopLine="164"/>
       </Position8>
       <Position9>
-        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <Caret Line="133" TopLine="115"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="195" Column="3" TopLine="182"/>
       </Position9>
       <Position10>
-        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <Caret Line="61" TopLine="43"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="193" TopLine="182"/>
       </Position10>
       <Position11>
-        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <Caret Line="84" TopLine="66"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="196" TopLine="182"/>
       </Position11>
       <Position12>
-        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <Caret Line="87" TopLine="66"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="199" TopLine="182"/>
       </Position12>
       <Position13>
-        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <Caret Line="89" TopLine="66"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="235" TopLine="213"/>
       </Position13>
       <Position14>
-        <Filename Value="C:\lazarus\lcl\include\customcheckbox.inc"/>
-        <Caret Line="92" TopLine="66"/>
+        <Filename Value="u_openfits.pas"/>
+        <Caret Line="137" TopLine="118"/>
       </Position14>
       <Position15>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="195" Column="3" TopLine="182"/>
+        <Caret Line="138" TopLine="118"/>
       </Position15>
       <Position16>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="193" TopLine="182"/>
+        <Caret Line="142" TopLine="118"/>
       </Position16>
       <Position17>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="196" TopLine="182"/>
+        <Caret Line="145" TopLine="118"/>
       </Position17>
       <Position18>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="199" TopLine="182"/>
+        <Caret Line="220" TopLine="209"/>
       </Position18>
       <Position19>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="193" TopLine="212"/>
+        <Caret Line="235" TopLine="209"/>
       </Position19>
       <Position20>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="235" TopLine="213"/>
+        <Caret Line="236" TopLine="212"/>
       </Position20>
       <Position21>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="137" TopLine="118"/>
+        <Caret Line="220" TopLine="212"/>
       </Position21>
       <Position22>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="138" TopLine="118"/>
+        <Filename Value="u_histogram.pas"/>
+        <Caret Line="185" TopLine="164"/>
       </Position22>
       <Position23>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="142" TopLine="118"/>
+        <Caret Line="235" Column="48" TopLine="213"/>
       </Position23>
       <Position24>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="145" TopLine="118"/>
+        <Caret Line="115" Column="16" TopLine="88"/>
       </Position24>
       <Position25>
         <Filename Value="u_openfits.pas"/>
-        <Caret Line="220" TopLine="209"/>
+        <Caret Line="152" Column="52" TopLine="136"/>
       </Position25>
       <Position26>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="235" TopLine="209"/>
+        <Filename Value="C:\lazarus\lcl\lcltype.pp"/>
+        <Caret Line="1310" Column="3" TopLine="1292"/>
       </Position26>
-      <Position27>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="236" TopLine="212"/>
-      </Position27>
-      <Position28>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="220" TopLine="212"/>
-      </Position28>
-      <Position29>
-        <Filename Value="u_histogram.pas"/>
-        <Caret Line="185" TopLine="164"/>
-      </Position29>
-      <Position30>
-        <Filename Value="u_openfits.pas"/>
-        <Caret Line="235" Column="48" TopLine="213"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

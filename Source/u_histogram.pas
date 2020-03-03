@@ -100,6 +100,10 @@ uses
 { TF__HISTOGRAM }
 
 procedure TF__HISTOGRAM.HistChange();
+{2020/03/01 / fs
+Controls the shape of the arctan-contrast functions by the position of the trackbutton TB__HIST.
+Modifies the addressed image by the modified contrast function
+}
 var
   i: Integer;
   rX, rY: Real;
@@ -125,6 +129,10 @@ end;
 
 
 procedure TF__HISTOGRAM.GammaChange();
+{2020/03/01 / fs
+Controls the shape of the gamma-function by the position of the trackbutton TB__GAMMA.
+Modifies the addressed image by the modified gamma function
+}
 var
   i: Integer;
   rX, rY: Real;
@@ -152,29 +160,49 @@ begin
 end;
 
 procedure TF__HISTOGRAM.TB__GAMMAKeyPress(Sender: TObject; var Key: char);
+{2020/03/01 / fs
+Things to do when a key is pressed while using the trackbutton TB__GAMMA:
+Calling GammaChange function.
+}
 begin
   GammaChange();
 end;
 
 procedure TF__HISTOGRAM.TB__GAMMAMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
+{2020/03/01 / fs
+Things to do when a mouseup-event is recognized while using the trackbutton TB__GAMMA:
+Calling GammaChange function.
+}
 begin
   GammaChange();
 end;
 
 procedure TF__HISTOGRAM.TB__HISTKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+{2020/03/01 / fs
+Things to do when a KeyUp is recognized while using the trackbutton TB__HIST:
+Calling HistChange function.
+}
 begin
   HistChange();
 end;
 
 procedure TF__HISTOGRAM.TB__HISTMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
+{2020/03/01 / fs
+Things to do when a MouseUp is recognized while using the trackbutton TB__HIST:
+Calling HistChange function.
+}
 begin
   HistChange();
 end;
 
 procedure TF__HISTOGRAM.TB__LINEChange(Sender: TObject);
+{2020/03/01 / fs
+Things to do when the trackbutton TB__LINE is changed to re-calculate the
+intervals (<L>ow/<H>igh) of the histogram
+}
 begin
   if(mbLeftMode) then
     (CHART.Series[4] as TConstantLine).Position := (ciBit_16 div TB__LINE.Max) * TB__LINE.Position
@@ -188,6 +216,12 @@ begin
 end;
 
 procedure TF__HISTOGRAM.FormActivate(Sender: TObject);
+{2020/03/01 / fs
+Things to do when the histogram form is opened.
+Distinguished between:
+- a new image is evaluated (mNewLoaded = TRUE) to set on default values
+- an imgae is reopened (mbNewLoaded = FALSE)
+}
 begin
   if(F__OPENFITS.mbNewLoaded) then
   begin
@@ -208,6 +242,11 @@ begin
 end;
 
 procedure TF__HISTOGRAM.PC__CONTROLChange(Sender: TObject);
+{2020/03/01 / fs
+Things to do when the PageControl tab is changed:
+- Gamma function is selected
+- Hist function (for contrast) is selected
+}
 begin
   case PC__CONTROL.ActivePageIndex of
     0: GammaChange();
@@ -220,23 +259,25 @@ begin
 end;
 
 procedure TF__HISTOGRAM.P__LINE_SEL_LClick(Sender: TObject);
+{2020/03/01 / fs
+Things to do when L-Panelbutton is clicked to activate the LOW range calculation setting
+}
 begin
   mbLeftMode := true;
   P__LINE_SEL_L.Caption:='L';
   P__LINE_SEL_R.Caption:='';
   TB__LINE.Position := Trunc(((CHART.Series[4] as TConstantLine).Position / ciBit_16)*TB__LINE.Max) + 1;
-
-  //F__OPENFITS.ModifyActiveImage((CHART.Series[5] as TConstantLine).Position,ofpCutLow,CBX__RED.Checked,CBX__GREEN.Checked,CBX__BLUE.Checked);
 end;
 
 procedure TF__HISTOGRAM.P__LINE_SEL_RClick(Sender: TObject);
+{2020/03/01 / fs
+Things to do when H-Panelbutton is clicked to activate the HIGH range calculation setting
+}
 begin
   mbLeftMode := false;
   P__LINE_SEL_L.Caption:='';
   P__LINE_SEL_R.Caption:='H';
   TB__LINE.Position := Trunc(((CHART.Series[5] as TConstantLine).Position / ciBit_16)*TB__LINE.Max) + 1;
-
-  //F__OPENFITS.ModifyActiveImage((CHART.Series[5] as TConstantLine).Position,ofpCutHigh,CBX__RED.Checked,CBX__GREEN.Checked,CBX__BLUE.Checked);
 end;
 
 
