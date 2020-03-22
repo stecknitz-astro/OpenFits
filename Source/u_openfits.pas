@@ -65,10 +65,19 @@ type
   { TF__OPENFITS }
 
   TF__OPENFITS = class(TForm)
+    CDLG: TColorDialog;
     IMGL__LIB: TImageList;
     IMGL__MENU: TImageList;
     L__TEST: TLabel;
     MenuItem1: TMenuItem;
+    MENU__EDIT_LIMITLOW: TMenuItem;
+    MENU__EDIT_DIVIDE: TMenuItem;
+    MENU__EDIT_MULT: TMenuItem;
+    MENU__EDIT_MINUS: TMenuItem;
+    MENU__EDIT_ADD: TMenuItem;
+    MENU__PIXMATH: TMenuItem;
+    MENU__CLONE: TMenuItem;
+    MENU__EDIT: TMenuItem;
     MENU__LANG_EN: TMenuItem;
     MENU__LANG_DE: TMenuItem;
     MENU__INFO: TMenuItem;
@@ -99,7 +108,13 @@ type
     procedure FormShow(Sender: TObject);
     procedure MENU__ADAPT_SIZEClick(Sender: TObject);
     procedure MENU__ADAPT_SIZE_ALLClick(Sender: TObject);
+    procedure MENU__CLONEClick(Sender: TObject);
     procedure MENU__CLOSEClick(Sender: TObject);
+    procedure MENU__EDIT_ADDClick(Sender: TObject);
+    procedure MENU__EDIT_DIVIDEClick(Sender: TObject);
+    procedure MENU__EDIT_LIMITLOWClick(Sender: TObject);
+    procedure MENU__EDIT_MINUSClick(Sender: TObject);
+    procedure MENU__EDIT_MULTClick(Sender: TObject);
     procedure MENU__FILEOPENClick(Sender: TObject);
     procedure MENU__HISTOGRAMClick(Sender: TObject);
     procedure MENU__INFOClick(Sender: TObject);
@@ -121,27 +136,27 @@ type
     mslImgLst: TStringList; // Stringlist buffer containing the opened image windows
     mSrcIntfImg: TLazIntfImage; // Image modification memory
 
-    marFloatBitmap_R: array of array of Real; // Float buffer array - Intensity of red color pixel
-    marFloatBitmap_G: array of array of Real; // Float buffer array - Intensity of green color pixel
-    marFloatBitmap_B: array of array of Real; // Float buffer array - Intensity of blue color pixel
-    miXDim, miYDim: Integer; // Dimensions of the float buffer array
-    miMaxIntensity: Integer; // Maximum intensity value of the float buffer array
-
     procedure SaveImg();
     procedure OpenFitsMenuClick(Sender: TObject);
     procedure GetHistogramData(ABitMap: Graphics.TBitmap);
-    procedure RegisterFloatBitmap(ABitMap: Graphics.TBitmap);
+    procedure RegisterFloatBitmap(ABitmap: Graphics.TBitmap; iIndex: Integer);
     function GetGammaVal(rIntensity: Real; rGamma: Real): Word;
     function GetHistContrastVal(rIntensity: Real; rHist: Real): Word;
     function GetCutLowHighVal(rIntensity: Real; rArgL, rArgH: Real): Word;
+    function GetBasicMathModVal(rIntensity: Real; rArg: Real; OpenFitsPixFunction: TOpenFitsPixFunction): Word;
+    procedure ExecBasicImgCalc(OpenFitsPixFunction: TOpenFitsPixFunction);
+    procedure GetImgWindowPos(iIndex: Integer; var iLeft: Integer; var iTop: Integer);
 
   public
     miActiveImgForm: Integer; // Index of the activated image window
     msLANG_ID: string; // Current language ID: DE: German, EN - English
     mbNewLoaded: Boolean; // Set to TRUE only, if a new image windos is opened. Used for special initializing activities
 
-    procedure ModifyActiveImage(rArg, rArg2: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
+    procedure ModifyActiveImage(fcArg, fcArg2: TFloatColor; OpenFitsPixFunction: TOpenFitsPixFunction);
     procedure UnregisterFloatBitmap();
+    function ColorToFloatColor(clColor: TColor): TFloatColor;
+    function NewImgWindow(sCaption: string; var iIndex: Integer): TF__IMG;
+    function CloneImgWindow(iSourceIndex: Integer; var iNewIndex: Integer): TF__IMG;
 
   end;
 
@@ -158,6 +173,198 @@ implementation
 
 { TF__OPENFITS }
 
+function TF__OPENFITS.CloneImgWindow(iSourceIndex: Integer; var iNewIndex: Integer): TF__IMG;
+{2020/03/20 / fs
+Clones an image window, identified by index iSource index.
+Returns the index of the cloned window
+}
+var
+  SrcIntfImg: TLazIntfImage;
+  sCaption: string;
+begin
+  Result := nil;
+  iNewIndex := -1;
+
+  if(iSourceIndex < 0) or (mslImgLst.Count = 0) then
+    exit;
+
+  sCaption := (mslImgLst.Objects[miActiveImgForm] as TF__IMG).Caption + '_Clone';
+
+  SrcIntfImg:=TLazIntfImage.Create(0,0);
+  SrcIntfImg.LoadFromBitmap(
+    (mslImgLst.Objects[iSourceIndex] as TF__IMG).IMG.Picture.Bitmap.Handle,
+    (mslImgLst.Objects[iSourceIndex] as TF__IMG).IMG.Picture.Bitmap.MaskHandle);
+
+  Result := NewImgWindow(sCaption,iNewIndex);
+  Result.IMG.Picture.Bitmap.LoadFromIntfImage(SrcIntfImg);
+
+  RegisterFloatBitmap((mslImgLst.Objects[iNewIndex] as TF__IMG).IMG.Picture.Bitmap,iNewIndex);
+
+  SrcIntfImg.Free;
+
+end;
+
+function TF__OPENFITS.NewImgWindow(sCaption: string; var iIndex: Integer): TF__IMG;
+{2020/03/17 / fs
+Creates and registers a new client image window with an empty image
+}
+var
+  iLeft, iTop: Integer;
+begin
+  iLeft := 0; iTop := 0;
+
+  Result := TF__IMG.Create(F__OPENFITS);
+  mslImgLst.AddObject('F__IMG_' + IntToStr(mslImgLst.Count+1), Result);
+  iIndex := mslImgLst.Count-1;
+  Result.Name:='F__IMG_' + IntToStr(mslImgLst.Count+1);
+  Result.Tag := iIndex;
+  Result.Caption:=sCaption;
+
+  GetImgWindowPos(iIndex, iLeft, iTop);
+
+  Result.Left:=iLeft;
+  Result.Top:=iTop;
+end;
+
+function TF__OPENFITS.ColorToFloatColor(clColor: TColor): TFloatColor;
+var
+  iColor: LongInt;
+begin
+  iColor := ColorToRGB(clColor);
+
+  // Set & stretch values
+  Result.rRed := Red(iColor); Result.rRed := Result.rRed * Result.rRed;
+  Result.rGreen := Green(iColor); Result.rGreen := Result.rGreen * Result.rGreen;
+  Result.rBlue := Blue(iColor); Result.rBlue := Result.rBlue * Result.rBlue;
+
+end;
+
+procedure TF__OPENFITS.ExecBasicImgCalc(OpenFitsPixFunction: TOpenFitsPixFunction);
+{2020/03/05 / fs
+Request and execution call for a basic image manipulation operation
+}
+var
+  fcArg1, fcArg2: TFloatColor;
+  sTitle, sQuery: string;
+begin
+  if(msLANG_ID = 'DE') then
+    sTitle := 'Eingabe'
+  else
+    sTitle := 'Input';
+
+  case OpenFitsPixFunction of
+  ofpAdd:
+    begin
+      if(msLANG_ID = 'DE') then
+        sQuery := 'Zu addierender Wert'
+      else
+        sQuery := 'Adding value';
+    end;
+
+  ofpMinus:
+    begin
+      if(msLANG_ID = 'DE') then
+        sQuery := 'Zu subtrahierender Wert'
+      else
+        sQuery := 'Subtracting value';
+    end;
+
+  ofpMult:
+    begin
+      if(msLANG_ID = 'DE') then
+        sQuery := 'Zu multiplizierender Wert > 0'
+      else
+        sQuery := 'Multiplying value > 0';
+    end;
+
+  ofpDiv:
+    begin
+      if(msLANG_ID = 'DE') then
+        sQuery := 'Zu dividierender Wert <> 0'
+      else
+        sQuery := 'Dividing value <> 0';
+
+    end;
+
+  ofpCutLow:
+    begin
+      OpenFitsPixFunction := ofpCutLowHigh;
+
+      if(msLANG_ID = 'DE') then
+        sQuery := 'Unterer Wert'
+      else
+        sQuery := 'Lower value';
+    end;
+
+  ofpCutHigh:
+    begin
+      OpenFitsPixFunction := ofpCutLowHigh;
+
+      if(msLANG_ID = 'DE') then
+        sQuery := 'Oberer Wert'
+      else
+        sQuery := 'Upper value';
+
+    end;
+  end; // case
+
+  CDLG.Title := sTitle + ' ' + sQuery;
+
+  if(CDLG.Execute) and (CDLG.Color >= 0) then
+  begin
+    if(OpenFitsPixFunction = ofpCutHigh) then
+      fcArg2 := ColorToFloatColor(CDLG.Color)
+    else
+      fcArg1 := ColorToFloatColor(CDLG.Color);
+
+    ModifyActiveImage(fcArg1,fcArg2,OpenFitsPixFunction);
+
+  end;
+
+end;
+
+function TF__OPENFITS.GetBasicMathModVal(rIntensity: Real; rArg: Real; OpenFitsPixFunction: TOpenFitsPixFunction): Word;
+{2020/03/05 / fs
+Performs basic mathematical operations on an intensity value (eg. add, suptract, mulitply, divide, ...
+}
+begin
+  case OpenFitsPixFunction of
+  ofpAdd:
+    if(Trunc(rIntensity + rArg)  < ciMaxBits) then
+      Result := Trunc(rIntensity + rArg)
+    else
+      Result := ciMaxBits-1;
+
+  ofpMinus:
+    if(rIntensity - rArg  >= 0) then
+      Result := Trunc(rIntensity - rArg)
+    else
+      Result := 0;
+
+  ofpMult:
+    if(rArg >= 0) then
+    begin
+      if(rIntensity * rArg  < ciMaxBits) then
+        Result := Trunc(rIntensity * rArg)
+      else
+        Result := ciMaxBits-1;
+
+    end;
+  ofpDiv:
+    if(rArg > 0) then
+    begin
+      if(rIntensity / rArg  < ciMaxBits) then
+        Result := Trunc(rIntensity / rArg)
+      else
+        Result := ciMaxBits-1;
+
+    end;
+  else
+    Result := 0;
+
+  end; // case
+end;
+
 function TF__OPENFITS.GetCutLowHighVal(rIntensity: Real; rArgL, rArgH: Real): Word;
 {2020/03/01 / fs
 Setting values to 0 if rIntensity is lower equal rArgL,
@@ -168,7 +375,7 @@ begin
   if(rIntensity <= rArgL) then
     Result := 0
   else if(rIntensity >= rArgH) then
-    Result := miMaxIntensity//ciBit_16
+    Result := (mslImgLst.Objects[miActiveImgForm] as TF__IMG).miMaxIntensity//ciMaxBits
   else
     Result := Trunc(rIntensity);
 
@@ -183,8 +390,8 @@ var
 const
   rcXMax = 10.0;
 begin
-  rX := rIntensity*rcXMax/(ciBit_16-1); // [0..10]!
-  rY := (0.5*Pi + arctan2((rX - rcXMax/2)*rHist,1))/Pi *(ciBit_16-1);
+  rX := rIntensity*rcXMax/(ciMaxBits-1); // [0..10]!
+  rY := (0.5*Pi + arctan2((rX - rcXMax/2)*rHist,1))/Pi *(ciMaxBits-1);
 
   Result := Trunc(rY);
 end;
@@ -197,8 +404,8 @@ Evaluates the gamma power function for histogram modification
 var
   rX, rY: Real;
 begin
-  rX := rIntensity/(ciBit_16-1); // [0..1]!
-  rY := Power(rX,1.0/rGamma) *(ciBit_16-1);
+  rX := rIntensity/(ciMaxBits-1); // [0..1]!
+  rY := Power(rX,1.0/rGamma) *(ciMaxBits-1);
 
   Result := Trunc(rY);
 end;
@@ -208,15 +415,15 @@ procedure TF__OPENFITS.UnregisterFloatBitmap();
 Clears the RGB-Float buffer array and sets the correspondig diminesions to zero
 }
 begin
-  SetLength(marFloatBitmap_R, 0, 0);
-  SetLength(marFloatBitmap_G, 0, 0);
-  SetLength(marFloatBitmap_B, 0, 0);
+  SetLength((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R, 0, 0);
+  SetLength((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G, 0, 0);
+  SetLength((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B, 0, 0);
 
-  miXDim := 0;
-  miYDim := 0;
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).miXDim := 0;
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).miYDim := 0;
 end;
 
-procedure TF__OPENFITS.ModifyActiveImage(rArg,rArg2: Real; OpenFitsPixFunction: TOpenFitsPixFunction; bRed, bGreen, bBlue: Boolean);
+procedure TF__OPENFITS.ModifyActiveImage(fcArg,fcArg2: TFloatColor; OpenFitsPixFunction: TOpenFitsPixFunction);
 {2020/03/1 / fs
 General image modification function. Working on the RGB-float buffer array. Several modification functions
 can be addressed.
@@ -229,12 +436,13 @@ var
   CurColor: TFPColor;
   MemoryStream: TMemoryStream;
   ABitMap: Graphics.TBitmap;
+  iXDim, iYDim: Integer;
 begin
 
   if(miActiveImgForm < 0) or (miActiveImgForm >= mslImgLst.Count) then
     exit;
 
-  L__TEST.Caption:=FloatToStrF(rArg,ffFixed,8,2);
+  //L__TEST.Caption:=FloatToStrF(rArg,ffFixed,8,2);
 
   // Load active picture indexed by 'miActiveImgForm'
   ABitMap := (mslImgLst.Objects[miActiveImgForm] as TF__IMG).IMG.Picture.Bitmap;
@@ -242,8 +450,10 @@ begin
   if(ABitMap = nil) then
     exit;
 
+  iXDim := (mslImgLst.Objects[miActiveImgForm] as TF__IMG).miXDim;
+  iYDim := (mslImgLst.Objects[miActiveImgForm] as TF__IMG).miYDim;
 
-  if(miXDim = 0) or (miYDim = 0) then
+  if(iXDim = 0) or (iYDim = 0) then
     exit;
 
   pngbmp := TPortableNetworkGraphic.Create;
@@ -255,39 +465,65 @@ begin
   try
     Screen.Cursor:=crHourGlass;
 
-    for py:=0 to miYDim-1 do begin
-      for px:=0 to miXDim-1 do begin
+    for py:=0 to iYDim-1 do begin
+      for px:=0 to iXDim-1 do begin
 
         case OpenFitsPixFunction of
           ofpGamma:
           begin
-            if(bRed) then CurColor.Red:=GetGammaVal(marFloatBitmap_R[px,py],rArg);
-            if(bGreen) then CurColor.Green:=GetGammaVal(marFloatBitmap_G[px,py],rArg);
-            if(bBlue) then CurColor.Blue:=GetGammaVal(marFloatBitmap_B[px,py],rArg);
+            if(fcArg.rRed >= 0) then
+              CurColor.Red:=GetGammaVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R[px,py],fcArg.rRed);
+            if(fcArg.rGreen >= 0) then
+              CurColor.Green:=GetGammaVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G[px,py],fcArg.rGreen);
+            if(fcArg.rBlue >= 0) then
+              CurColor.Blue:=GetGammaVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B[px,py],fcArg.rBlue);
           end;
           ofpHist:
           begin
-            if(bRed) then CurColor.Red:=GetHistContrastVal(marFloatBitmap_R[px,py],rArg);
-            if(bGreen) then CurColor.Green:=GetHistContrastVal(marFloatBitmap_G[px,py],rArg);
-            if(bBlue) then CurColor.Blue:=GetHistContrastVal(marFloatBitmap_B[px,py],rArg);
+            if(fcArg.rRed >= 0) then
+              CurColor.Red:=GetHistContrastVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R[px,py],fcArg.rRed);
+            if(fcArg.rGreen >= 0) then
+              CurColor.Green:=GetHistContrastVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G[px,py],fcArg.rGreen);
+            if(fcArg.rBlue >= 0) then
+              CurColor.Blue:=GetHistContrastVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B[px,py],fcArg.rBlue);
           end;
           ofpCutLowHigh:
           begin
-            if(bRed) then CurColor.Red:=GetCutLowHighVal(marFloatBitmap_R[px,py],rArg,rArg2);
-            if(bGreen) then CurColor.Green:=GetCutLowHighVal(marFloatBitmap_G[px,py],rArg,rArg2);
-            if(bBlue) then CurColor.Blue:=GetCutLowHighVal(marFloatBitmap_B[px,py],rArg,rArg2);
+            if(fcArg.rRed >= 0) then
+              CurColor.Red:=GetCutLowHighVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R[px,py],fcArg.rRed,fcArg2.rRed);
+            if(fcArg.rGreen >= 0) then
+              CurColor.Green:=GetCutLowHighVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G[px,py],fcArg.rGreen,fcArg2.rGreen);
+            if(fcArg.rBlue >= 0) then
+              CurColor.Blue:=GetCutLowHighVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B[px,py],fcArg.rBlue,fcArg2.rBlue);
+          end;
+          ofpAdd, ofpMinus, ofpMult, ofpDiv:
+          begin
+            if(fcArg.rRed >= 0) then
+              CurColor.Red:=GetBasicMathModVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R[px,py],fcArg.rRed,OpenFitsPixFunction);
+            if(fcArg.rGreen >= 0) then
+              CurColor.Green:=GetBasicMathModVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G[px,py],fcArg.rGreen,OpenFitsPixFunction);
+            if(fcArg.rBlue >= 0) then
+              CurColor.Blue:=GetBasicMathModVal((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B[px,py],fcArg.rBlue,OpenFitsPixFunction);
           end;
           else
           begin
-            CurColor.red:=Trunc(marFloatBitmap_R[px,py]);
-            CurColor.green:=Trunc(marFloatBitmap_G[px,py]);
-            CurColor.blue:=Trunc(marFloatBitmap_B[px,py]);
+            CurColor.red:=Trunc((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R[px,py]);
+            CurColor.green:=Trunc((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G[px,py]);
+            CurColor.blue:=Trunc((mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B[px,py]);
           end;
         end; // case
 
+        if((mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer) then
+        begin
+          (mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_R[px,py] := CurColor.red;
+          (mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_G[px,py] := CurColor.green;
+          (mslImgLst.Objects[miActiveImgForm] as TF__IMG).marFloatBitmap_B[px,py] := CurColor.blue;
+        end;
+
         TempIntfImg.Colors[px,py]:=CurColor;
-      end;
-    end;
+      end; // px
+    end; // py
+
     TempIntfImg.CreateBitmaps(ImgHandle,ImgMaskHandle,false);
 
     pngbmp.BitmapHandle:=ImgHandle;
@@ -307,7 +543,7 @@ begin
 
 end;
 
-procedure TF__OPENFITS.RegisterFloatBitmap(ABitMap: Graphics.TBitmap);
+procedure TF__OPENFITS.RegisterFloatBitmap(ABitmap: Graphics.TBitmap; iIndex: Integer);
 {2020/02/23 / fs
 Registers a selected imaga and writes the image values into
 the RGB-Float buffer array
@@ -322,13 +558,13 @@ begin
   SrcIntfImg:=TLazIntfImage.Create(0,0);
   SrcIntfImg.LoadFromBitmap(ABitmap.Handle,ABitmap.MaskHandle);
 
-  SetLength(marFloatBitmap_R, SrcIntfImg.Width, SrcIntfImg.Height);
-  SetLength(marFloatBitmap_G, SrcIntfImg.Width, SrcIntfImg.Height);
-  SetLength(marFloatBitmap_B, SrcIntfImg.Width, SrcIntfImg.Height);
+  SetLength((mslImgLst.Objects[iIndex] as TF__IMG).marFloatBitmap_R, SrcIntfImg.Width, SrcIntfImg.Height);
+  SetLength((mslImgLst.Objects[iIndex] as TF__IMG).marFloatBitmap_G, SrcIntfImg.Width, SrcIntfImg.Height);
+  SetLength((mslImgLst.Objects[iIndex] as TF__IMG).marFloatBitmap_B, SrcIntfImg.Width, SrcIntfImg.Height);
 
-  miXDim := SrcIntfImg.Width;
-  miYDim := SrcIntfImg.Height;
-  miMaxIntensity := 0;
+  (mslImgLst.Objects[iIndex] as TF__IMG).miXDim := SrcIntfImg.Width;
+  (mslImgLst.Objects[iIndex] as TF__IMG).miYDim := SrcIntfImg.Height;
+  (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity := 0;
 
   for py:=0 to SrcIntfImg.Height-1 do
   begin
@@ -336,16 +572,16 @@ begin
     begin
       CurColor:=SrcIntfImg.Colors[px,py];
 
-      marFloatBitmap_R[px,py] := CurColor.red;
-      marFloatBitmap_G[px,py] := CurColor.green;
-      marFloatBitmap_B[px,py] := CurColor.blue;
+      (mslImgLst.Objects[iIndex] as TF__IMG).marFloatBitmap_R[px,py] := CurColor.red;
+      (mslImgLst.Objects[iIndex] as TF__IMG).marFloatBitmap_G[px,py] := CurColor.green;
+      (mslImgLst.Objects[iIndex] as TF__IMG).marFloatBitmap_B[px,py] := CurColor.blue;
 
-      if(CurColor.red > miMaxIntensity) then
-        miMaxIntensity := CurColor.red;
-      if(CurColor.green> miMaxIntensity) then
-        miMaxIntensity := CurColor.green;
-      if(CurColor.blue > miMaxIntensity) then
-        miMaxIntensity := CurColor.blue;
+      if(CurColor.red > (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity) then
+        (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity := CurColor.red;
+      if(CurColor.green> (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity) then
+        (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity := CurColor.green;
+      if(CurColor.blue > (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity) then
+        (mslImgLst.Objects[iIndex] as TF__IMG).miMaxIntensity := CurColor.blue;
 
     end;
   end;
@@ -364,9 +600,9 @@ var
    SrcIntfImg: TLazIntfImage;
    i,px, py: Integer;
    CurColor: TFPColor;
-   iaHistColorRed: array[0..ciBit_16-1] of Integer;
-   iaHistColorGreen: array[0..ciBit_16-1] of Integer;
-   iaHistColorBlue: array[0..ciBit_16-1] of Integer;
+   iaHistColorRed: array[0..ciMaxBits-1] of Integer;
+   iaHistColorGreen: array[0..ciMaxBits-1] of Integer;
+   iaHistColorBlue: array[0..ciMaxBits-1] of Integer;
    iCnt: Integer;
    iMax: Integer;
 begin
@@ -379,7 +615,7 @@ begin
    SrcIntfImg:=TLazIntfImage.Create(0,0);
    SrcIntfImg.LoadFromBitmap(ABitmap.Handle,ABitmap.MaskHandle);
 
-   for i:=0 to ciBit_16-1 do
+   for i:=0 to ciMaxBits-1 do
    begin
      iaHistColorRed[i] := 0;
      iaHistColorGreen[i] := 0;
@@ -422,13 +658,13 @@ begin
      //(F__HISTOGRAM.CHART.Series[4] as TConstantSeries).Clear;
      //(F__HISTOGRAM.CHART.Series[5] as TConstantSeries).Clear;
 
-     for i:=0 to ciBit_16-1 do
+     for i:=0 to ciMaxBits-1 do
      begin
        (F__HISTOGRAM.CHART.Series[0] as TLineSeries).AddXY(i,iaHistColorRed[i]/iMax * 100.0);
        (F__HISTOGRAM.CHART.Series[1] as TLineSeries).AddXY(i,iaHistColorGreen[i]/iMax * 100.0);
        (F__HISTOGRAM.CHART.Series[2] as TLineSeries).AddXY(i,iaHistColorBlue[i]/iMax * 100.0);
         case F__HISTOGRAM.PC__CONTROL.ActivePageIndex of
-         0: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,1.0*i/(ciBit_16-1) * 100.0);
+         0: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,1.0*i/(ciMaxBits-1) * 100.0);
          1: (F__HISTOGRAM.CHART.Series[3] as TLineSeries).AddXY(i,50.0);
         end;
      end;
@@ -466,29 +702,34 @@ begin
   end;
 end;
 
+procedure TF__OPENFITS.GetImgWindowPos(iIndex: Integer; var iLeft: Integer; var iTop: Integer);
+{2020/03/17 / fs
+Calculates to top-left corner of client window identified with index 'iIndex'.
+}
+begin
+  iLeft:=10*(iIndex+1);
+  iTop:=ciWindowPosOffset + Height + 10*(iIndex+1);
+end;
+
 procedure TF__OPENFITS.MENU__FILEOPENClick(Sender: TObject);
 {2020/02/23 / fs
 Opens the selected image via the fileopen dialogue.
 After opening a corresponding menue item is generated to re-open the image.
 }
 var
-  sLowFileName: string;
   iIndex: Integer;
   F__IMG: TF__IMG;
   MenuItem: TMenuItem;
 begin
+  iIndex := -1;
+
   if(ODLG__OPENFITS.Execute) and (Trim(ODLG__OPENFITS.FileName) <> '') then
   begin
-    sLowFileName := Lowercase(ODLG__OPENFITS.FileName);
+    F__IMG := NewImgWindow(ODLG__OPENFITS.FileName,iIndex);
 
-    F__IMG := TF__IMG.Create(F__OPENFITS);
-    mslImgLst.AddObject('F__IMG_' + IntToStr(mslImgLst.Count+1), F__IMG);
-    iIndex := mslImgLst.Count-1;
-    F__IMG.Name:='F__IMG_' + IntToStr(mslImgLst.Count+1);
-    F__IMG.Tag := iIndex;
-    F__IMG.Caption:=ODLG__OPENFITS.FileName;
+    miActiveImgForm := iIndex;
 
-    if(RightStr(sLowFileName,4) = '.fit') then
+    if(RightStr(Lowercase(ODLG__OPENFITS.FileName),4) = '.fit') then
     begin
       // Init object
       FFit := TFitsFileBitmap.CreateJoin(ODLG__OPENFITS.FileName, cFileRead);
@@ -505,10 +746,7 @@ begin
       F__IMG.IMG.Picture.LoadFromFile(ODLG__OPENFITS.FileName);
     end;
 
-    RegisterFloatBitmap(F__IMG.IMG.Picture.Bitmap);
-
-    F__IMG.Left:=10*(iIndex+1);
-    F__IMG.Top:=ciWindowPosOffset + Height + 10*(iIndex+1);
+    RegisterFloatBitmap(F__IMG.IMG.Picture.Bitmap,miActiveImgForm);
 
     F__IMG.Show;
 
@@ -676,6 +914,8 @@ begin
   mslImgLst := TStringList.Create;
   miActiveImgForm := -1;
   mSrcIntfImg:=TLazIntfImage.Create(0,0);
+  msLANG_ID := 'DE';
+
 
   IniText(F__OPENFITS,'DE');
 end;
@@ -741,6 +981,20 @@ begin
 
 end;
 
+procedure TF__OPENFITS.MENU__CLONEClick(Sender: TObject);
+var
+  F__IMG: TF__IMG;
+  iNewIndex: Integer;
+begin
+  iNewIndex := -1;
+  F__IMG := CloneImgWindow(miActiveImgForm, iNewIndex);
+  if(F__IMG <> nil) and (iNewIndex > -1) then
+  begin
+    F__IMG.Show;
+    miActiveImgForm := iNewIndex;
+  end;
+end;
+
 
 procedure TF__OPENFITS.MENU__CLOSEClick(Sender: TObject);
 {2020/02/23 / fs
@@ -749,6 +1003,42 @@ Menu code to close the OpenFits main window
 begin
   Close;
 end;
+
+procedure TF__OPENFITS.MENU__EDIT_ADDClick(Sender: TObject);
+begin
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := true;
+  ExecBasicImgCalc(ofpAdd);
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := false;
+end;
+
+procedure TF__OPENFITS.MENU__EDIT_DIVIDEClick(Sender: TObject);
+begin
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := true;
+  ExecBasicImgCalc(ofpDiv);
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := false;
+end;
+
+procedure TF__OPENFITS.MENU__EDIT_LIMITLOWClick(Sender: TObject);
+begin
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := true;
+  ExecBasicImgCalc(ofpCutLow);
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := false;
+end;
+
+procedure TF__OPENFITS.MENU__EDIT_MINUSClick(Sender: TObject);
+begin
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := true;
+  ExecBasicImgCalc(ofpMinus);
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := false;
+end;
+
+procedure TF__OPENFITS.MENU__EDIT_MULTClick(Sender: TObject);
+begin
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := true;
+  ExecBasicImgCalc(ofpMult);
+  (mslImgLst.Objects[miActiveImgForm] as TF__IMG).mbModBuffer := false;
+end;
+
 
 end.
 

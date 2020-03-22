@@ -75,6 +75,7 @@ begin
     if(sText = 'Ansicht') then begin Result := 'View'; exit; end;
     if(sText = 'Auf Bildgröße') then begin Result := 'Shrink to image'; exit; end;
     if(sText = 'Autore(n)') then begin Result := 'Author(s)'; exit; end;
+    if(sText = 'Bearbeiten') then begin Result := 'Edit'; exit; end;
     if(sText = 'Beenden') then begin Result := 'Close'; exit; end;
     if(sText = 'Beispiele') then begin Result := 'Examples'; exit; end;
     if(sText = 'Berechne') then begin Result := 'Calculate'; exit; end;
@@ -99,6 +100,9 @@ begin
     if(sText = 'Entfernen') then begin Result := 'Remove'; exit; end;
     if(sText = 'Farben') then begin Result := 'Color'; exit; end;
     if(sText = 'Fenster') then begin Result := 'Window'; exit; end;
+    if(sText = 'Farbe addieren') then begin Result := 'Add color'; exit; end;
+    if(sText = 'Farbe multiplizieren') then begin Result := 'Multiply color'; exit; end;
+    if(sText = 'Farbbereich unten begrenzen') then begin Result := 'Set value range low limit'; exit; end;
     if(sText = 'Foto') then begin Result := 'Photo'; exit; end;
     if(sText = 'Fotos') then begin Result := 'Pictures'; exit; end;
     if(sText = 'Gerätename') then begin Result := 'Device Name'; exit; end;
@@ -109,6 +113,7 @@ begin
     if(sText = 'Hinzufügen') then begin Result := 'Add'; exit; end;
     if(sText = 'Histogramm') then begin Result := 'Histogram'; exit; end;
     if(sText = 'Jetzt') then begin Result := 'Now'; exit; end;
+    if(sText = 'Klonen') then begin Result := 'Clone'; exit; end;
     if(sText = 'Löschen') then begin Result := 'Delete'; exit; end;
     if(sText = 'Maske neu') then begin Result := 'Form new'; exit; end;
     if(sText = 'mittel') then begin Result := 'medium'; exit; end;
@@ -117,6 +122,7 @@ begin
     if(sText = 'Optionen') then begin Result := 'Options'; exit; end;
     if(sText = 'Perspektive: Neigungsansicht') then begin Result := 'Perspektive: Inclination view'; exit; end;
     if(sText = 'Pixelgröße') then begin Result := 'Pixel Size'; exit; end;
+    if(sText = 'Pixelmathematik') then begin Result := 'Pixel Mathematics'; exit; end;
     if(sText = 'Punkte') then begin Result := 'Points'; exit; end;
     if(sText = 'Rot') then begin Result := 'Red'; exit; end;
     if(sText = 'schwach') then begin Result := 'faint'; exit; end;
@@ -135,12 +141,14 @@ begin
     if(sText = 'Übereinander') then begin Result := 'Stacked'; exit; end;
     if(sText = 'Überlappend') then begin Result := 'Overlapping'; exit; end;
     if(sText = 'Übernehmen') then begin Result := 'Accept'; exit; end;
+    if(sText = 'Übertrage Skalierung auf Bildwerte') then begin Result := 'Transfer scaling into image'; exit; end;
     if(sText = 'Verbergen') then begin Result := 'Hide'; exit; end;
     if(sText = 'Vergrößerungen') then begin Result := 'Magnifications'; exit; end;
     if(sText = 'Visualisierung') then begin Result := 'Visualisation'; exit; end;
     if(sText = 'Voreinstellungen') then begin Result := 'Preferences'; exit; end;
     if(sText = 'Viel') then begin Result := 'High'; exit; end;
     if(sText = 'Wenig') then begin Result := 'Low'; exit; end;
+    if(sText = 'Wert addieren') then begin Result := 'Add value'; exit; end;
     if(sText = 'Winkel') then begin Result := 'Angles'; exit; end;
     if(sText = 'Zeige Optionen') then begin Result := 'Show Options'; exit; end;
     if(sText = 'Zeit') then begin Result := 'Time'; exit; end;
@@ -153,7 +161,9 @@ begin
   begin
     if(sText = 'Accept') then begin Result := 'Übernehmen'; exit; end;
     if(sText = 'Add') then begin Result := 'Hinzufügen'; exit; end;
+    if(sText = 'Add color') then begin Result := 'Farbe addieren'; exit; end;
     if(sText = 'Add picture') then begin Result := 'Bild hinzufügen'; exit; end;
+    if(sText = 'Add value') then begin Result := 'Wert addieren'; exit; end;
     if(sText = 'All') then begin Result := 'Alle'; exit; end;
     if(sText = 'Angles') then begin Result := 'Winkel'; exit; end;
     if(sText = 'Animations') then begin Result := 'Animationen'; exit; end;
@@ -167,6 +177,7 @@ begin
     if(sText = 'Clear Input Mask') then begin Result := 'Eingabemaske leeren'; exit; end;
     if(sText = 'Clear Mask') then begin Result := 'Maske leeren'; exit; end;
     if(sText = 'Close') then begin Result := 'Beenden'; exit; end;
+    if(sText = 'Clone') then begin Result := 'Klonen'; exit; end;
     if(sText = 'Color') then begin Result := 'Farben'; exit; end;
     if(sText = 'Database') then begin Result := 'Datenbank'; exit; end;
     if(sText = 'Date') then begin Result := 'Datum'; exit; end;
@@ -176,6 +187,7 @@ begin
     if(sText = 'Description') then begin Result := 'Beschreibung'; exit; end;
     if(sText = 'Diagram') then begin Result := 'Diagramm'; exit; end;
     if(sText = 'Donate') then begin Result := 'Spenden'; exit; end;
+    if(sText = 'Edit') then begin Result := 'Bearbeiten'; exit; end;
     if(sText = 'English') then begin Result := 'Englisch'; exit; end;
     if(sText = 'Examples') then begin Result := 'Beispiele'; exit; end;
     if(sText = 'Fade in') then begin Result := 'Einblenden'; exit; end;
@@ -198,6 +210,7 @@ begin
     if(sText = 'Manual (PDF)') then begin Result := 'Dokumentation (PDF)'; exit; end;
     if(sText = 'Maximum Magnitude') then begin Result := 'Maximale Magnitude'; exit; end;
     if(sText = 'Minimize all') then begin Result := 'Alle verkleinern'; exit; end;
+    if(sText = 'Multiply color') then begin Result := 'Farbe multiplizieren'; exit; end;
     if(sText = 'Night') then begin Result := 'Nacht'; exit; end;
     if(sText = 'Now') then begin Result := 'Jetzt'; exit; end;
     if(sText = 'Open') then begin Result := 'Öffnen'; exit; end;
@@ -206,6 +219,8 @@ begin
     if(sText = 'Photo') then begin Result := 'Foto'; exit; end;
     if(sText = 'Pictureviewer') then begin Result := 'Bildbetrachter'; exit; end;
     if(sText = 'Picture') then begin Result := 'Bild'; exit; end;
+    if(sText = 'Pixel Mathematics') then begin Result := 'Pixelmathematik'; exit; end;
+    if(sText = 'Pixel Size') then begin Result := 'Pixelgröße'; exit; end;
     if(sText = 'Points') then begin Result := 'Punkte'; exit; end;
     if(sText = 'Preferences') then begin Result := 'Voreinstellungen'; exit; end;
     if(sText = 'Privacy Statement') then begin Result := 'Datenschutz'; exit; end;
@@ -218,6 +233,7 @@ begin
     if(sText = 'Search') then begin Result := 'Suche'; exit; end;
     if(sText = 'Seconds') then begin Result := 'Sekunden'; exit; end;
     if(sText = 'Section') then begin Result := 'Abschnitt'; exit; end;
+    if(sText = 'Set color range low limit') then begin Result := 'Farbbereich unten begrenzen'; exit; end;
     if(sText = 'Shrink to image') then begin Result := 'Auf Bildgröße'; exit; end;
     if(sText = 'Shrink all visible to image') then begin Result := 'Alle sichtbaren auf Bildgröße'; exit; end;
     if(sText = 'Spreadsheets') then begin Result := 'Tabellen'; exit; end;
@@ -228,6 +244,7 @@ begin
     if(sText = 'Time Zone') then begin Result := 'Zeitzone'; exit; end;
     if(sText = 'Today') then begin Result := 'Heute'; exit; end;
     if(sText = 'Tile') then begin Result := 'Nebeneinander'; exit; end;
+    if(sText = 'Transfer scaling into image') then begin Result := 'Übertrage Skalierung auf Bildwerte'; exit; end;
     if(sText = 'Type') then begin Result := 'Typ'; exit; end;
     if(sText = 'Unit') then begin Result := 'Einheit'; exit; end;
     if(sText = 'Window') then begin Result := 'Fenster'; exit; end;

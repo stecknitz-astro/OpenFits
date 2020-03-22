@@ -1,7 +1,7 @@
 object F__HISTOGRAM: TF__HISTOGRAM
-  Left = 804
+  Left = 818
   Height = 350
-  Top = 255
+  Top = 264
   Width = 540
   Caption = 'Histogramm'
   ClientHeight = 350
@@ -219,6 +219,7 @@ object F__HISTOGRAM: TF__HISTOGRAM
         'TAChart'
       )
       Align = alClient
+      PopupMenu = PMENU_HISTO
       object CHARTLineSeries1: TLineSeries
         LinePen.Color = clRed
       end
@@ -317,6 +318,14 @@ object F__HISTOGRAM: TF__HISTOGRAM
         Align = alClient
         TabOrder = 2
       end
+    end
+  end
+  object PMENU_HISTO: TPopupMenu
+    left = 152
+    top = 40
+    object MENU__TRANSFER_SCALE: TMenuItem
+      Caption = 'Übertrage Skalierung auf Bildwerte'
+      OnClick = MENU__TRANSFER_SCALEClick
     end
   end
 end

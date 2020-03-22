@@ -32,6 +32,7 @@ uses
 
 const
   ciBit_16 = 65536;
+  ciMaxBits = ciBit_16;
 
   csAppName = 'OpenFits';
   csAuthor = 'Frank Szemkus';
@@ -42,7 +43,7 @@ const
   csVersionSubSub = '1';
 
 type
-  TOpenFitsPixFunction = (ofpGamma, ofpHist, ofpCutLowHigh, ofpSqrt, ofpPower, ofpMult, ofpAdd, ofpMinus, ofpDiv);
+  TOpenFitsPixFunction = (ofpGamma, ofpHist, ofpCutLowHigh, ofpCutLow, ofpCutHigh, ofpSqrt, ofpPower, ofpMult, ofpAdd, ofpMinus, ofpDiv);
 
   TFloatColor = record
       rRed,rGreen,rBlue,rAlpha : Real;

@@ -1,7 +1,7 @@
 object F__INFO: TF__INFO
-  Left = 546
+  Left = 559
   Height = 236
-  Top = 169
+  Top = 179
   Width = 447
   Caption = 'Info'
   ClientHeight = 236

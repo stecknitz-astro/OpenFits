@@ -1,20 +1,48 @@
 object F__IMG: TF__IMG
-  Left = 799
-  Height = 401
-  Top = 233
-  Width = 528
+  Left = 812
+  Height = 325
+  Top = 243
+  Width = 524
   Caption = 'Image Form'
-  ClientHeight = 401
-  ClientWidth = 528
+  ClientHeight = 325
+  ClientWidth = 524
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCreate = FormCreate
   LCLVersion = '2.0.6.0'
   object IMG: TImage
     Left = 0
-    Height = 401
+    Height = 325
     Top = 0
-    Width = 528
+    Width = 524
     Align = alClient
+    Center = True
+    OnMouseWheel = IMGMouseWheel
     Proportional = True
+  end
+  object SCB__IMG: TScrollBox
+    Left = 0
+    Height = 325
+    Top = 0
+    Width = 524
+    HorzScrollBar.Page = 240
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Page = 169
+    VertScrollBar.Tracking = True
+    Align = alClient
+    ClientHeight = 321
+    ClientWidth = 520
+    TabOrder = 0
+    Visible = False
+    OnMouseWheelDown = SCB__IMGMouseWheelDown
+    OnMouseWheelUp = SCB__IMGMouseWheelUp
+    object PB__IMG: TPaintBox
+      Left = 0
+      Height = 169
+      Top = 0
+      Width = 240
+      Visible = False
+      OnPaint = PB__IMGPaint
+    end
   end
 end

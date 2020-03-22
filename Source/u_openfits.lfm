@@ -1,7 +1,7 @@
 object F__OPENFITS: TF__OPENFITS
-  Left = 131
+  Left = 0
   Height = 81
-  Top = 152
+  Top = 114
   Width = 1008
   Caption = 'OpenFits'
   ClientHeight = 61
@@ -79,6 +79,35 @@ object F__OPENFITS: TF__OPENFITS
         OnClick = MENU__SAVEClick
       end
     end
+    object MENU__EDIT: TMenuItem
+      Caption = 'Bearbeiten'
+      object MENU__PIXMATH: TMenuItem
+        Caption = 'Pixelmathematik'
+        object MENU__EDIT_ADD: TMenuItem
+          Caption = 'Farbe addieren'
+          ShortCut = 16449
+          OnClick = MENU__EDIT_ADDClick
+        end
+        object MENU__EDIT_MINUS: TMenuItem
+          Caption = 'Farbe subtrahieren'
+          OnClick = MENU__EDIT_MINUSClick
+        end
+        object MENU__EDIT_MULT: TMenuItem
+          Caption = 'Farbe multiplizieren'
+          ShortCut = 16461
+          OnClick = MENU__EDIT_MULTClick
+        end
+        object MENU__EDIT_DIVIDE: TMenuItem
+          Caption = 'Farbe dividieren'
+          ShortCut = 16452
+          OnClick = MENU__EDIT_DIVIDEClick
+        end
+        object MENU__EDIT_LIMITLOW: TMenuItem
+          Caption = 'Farbbereich unten begrenzen'
+          OnClick = MENU__EDIT_LIMITLOWClick
+        end
+      end
+    end
     object MENU__WINDOW: TMenuItem
       Caption = 'Fenster'
       object MENU__WINDOW_OVERLAP: TMenuItem
@@ -110,6 +139,10 @@ object F__OPENFITS: TF__OPENFITS
       object MENU__MINIMIZE_ALL: TMenuItem
         Caption = 'Alle verkleinern'
         OnClick = MENU__MINIMIZE_ALLClick
+      end
+      object MENU__CLONE: TMenuItem
+        Caption = 'Klonen'
+        OnClick = MENU__CLONEClick
       end
       object MenuItem3: TMenuItem
         Caption = '-'
@@ -545,5 +578,31 @@ object F__OPENFITS: TF__OPENFITS
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
     }
+  end
+  object CDLG: TColorDialog
+    Color = clBlack
+    CustomColors.Strings = (
+      'ColorA=000000'
+      'ColorB=000080'
+      'ColorC=008000'
+      'ColorD=008080'
+      'ColorE=800000'
+      'ColorF=800080'
+      'ColorG=808000'
+      'ColorH=808080'
+      'ColorI=C0C0C0'
+      'ColorJ=0000FF'
+      'ColorK=00FF00'
+      'ColorL=00FFFF'
+      'ColorM=FF0000'
+      'ColorN=FF00FF'
+      'ColorO=FFFF00'
+      'ColorP=FFFFFF'
+      'ColorQ=C0DCC0'
+      'ColorR=F0CAA6'
+      'ColorS=F0FBFF'
+      'ColorT=A4A0A0'
+    )
+    left = 592
   end
 end
